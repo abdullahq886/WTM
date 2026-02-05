@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Filling History | Water Inventory Pro</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="fill.css">
+</head>
+<body>
+
+    <!-- Professional Software Header -->
+    <header class="main-header">
+        <div class="logo-area">
+            <div class="logo-circle"><i class="fas fa-droplet"></i></div>
+            <div class="logo-text">
+                <h1>Drinking Water 💧</h1>
+                <p>Inventory Software</p>
+            </div>
+        </div>
+
+        <nav class="software-nav">
+            <a href="index.html" class="nav-item">
+                <i class="fas fa-chart-line"></i><span>Dashboard 📊</span>
+            </a>
+            <a href="bot.html" class="nav-item">
+                <i class="fas fa-fill-drip"></i><span>Filling Entry 🧴</span>
+            </a>
+            <div class="nav-item active">
+                <i class="fas fa-history"></i><span>Stock History 📜</span>
+            </div>
+            <a href="Settings.html" class="nav-item">
+                <i class="fas fa-gear"></i><span>Settings ⚙️</span>
+            </a>
+        </nav>
+
+        <div class="system-controls">
+            <button id="theme-toggle" title="Switch Theme"><i class="fas fa-moon"></i></button>
+            <i class="fas fa-window-minimize"></i>
+            <i class="fas fa-window-maximize"></i>
+            <i class="fas fa-rectangle-xmark close-btn"></i>
+        </div>
+    </header>
+
+    <main class="page-content">
+        <div class="container">
+            <!-- 1. Summary Statistics -->
+            <div class="stats-row">
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-bottle-water"></i></div>
+                    <div class="stat-data">
+                        <span class="stat-label">Total Filled Bottles</span>
+                        <h2 id="totalCount">24,580</h2>
+                    </div>
+                </div>
+                <div class="stat-card blue">
+                    <div class="stat-icon"><i class="fas fa-calendar-check"></i></div>
+                    <div class="stat-data">
+                        <span class="stat-label">Filled Today</span>
+                        <h2>1,240</h2>
+                    </div>
+                </div>
+                <div class="stat-card green">
+                    <div class="stat-icon"><i class="fas fa-check-circle"></i></div>
+                    <div class="stat-data">
+                        <span class="stat-label">Verified Logs</span>
+                        <h2>100%</h2>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. Filter Bar -->
+            <section class="filter-wrapper">
+                <div class="filter-header">
+                    <h3><i class="fas fa-filter"></i> Advanced Filters</h3>
+                </div>
+                <div class="filter-body">
+                    <div class="filter-group">
+                        <label>From Date</label>
+                        <input type="date" id="filterFrom">
+                    </div>
+                    <div class="filter-group">
+                        <label>To Date</label>
+                        <input type="date" id="filterTo">
+                    </div>
+                    <div class="filter-group">
+                        <label>Product Filter</label>
+                        <select id="filterProduct">
+                            <option value="all">All Inventory</option>
+                            <option value="19l">19 Liter Jar 🍶</option>
+                            <option value="1.5l">1.5 Liter Bottle 🍼</option>
+                            <option value="500ml">500ml Bottle 💧</option>
+                        </select>
+                    </div>
+                    <button class="btn-search"><i class="fas fa-magnifying-glass"></i> Search</button>
+                </div>
+            </section>
+
+            <!-- 3. Data Table -->
+            <div class="data-card">
+                <div class="card-header">
+                    <h3>Recent Production Logs</h3>
+                    <button class="btn-export"><i class="fas fa-file-export"></i> Export CSV</button>
+                </div>
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Ref ID #</th>
+                                <th>Date & Time ⏰</th>
+                                <th>Product 📦</th>
+                                <th>Quantity 🔢</th>
+                                <th>Operator 👤</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="historyTableBody">
+                            <!-- Dynamic Content -->
+                        </tbody>  <br>  <br>
+                    </table>  
+                </div>
+            </div>
+        </div> 
+    </main>
+    
+
+    <!-- Footer Status Bar -->
+    <footer class="footer-bar">
+        <div class="footer-left">Copyright © All rights reserved by <strong>SOFTWEBPK</strong></div>
+        <div class="footer-center">DB Status: <span class="sync-text">● Connected</span></div>
+        <div class="footer-right">v2.1.0-Audit</div>
+    </footer>
+
+    <script src="fill.js"></script>
+</body>
+</html>

@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stock Movement Manager | AquaFlow ERP</title>
+    <!-- Professional Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="Stock.css">
+</head>
+<body>
+
+    <!-- Header Section (Software Brand Bar) -->
+    <header class="software-header">
+        <div class="brand-unit">
+            <div class="logo-orb"><i class="fas fa-droplet"></i></div>
+            <div class="brand-text">
+                <h1>Drinking Water 💧</h1>
+                <p>Inventory Software Pro</p>
+            </div>
+        </div>
+
+        <nav class="software-nav">
+            <a href="index.html" class="nav-btn"><i class="fas fa-chart-line"></i><span>Dashboard 📊</span></a>
+            <div class="nav-btn active"><i class="fas fa-right-left"></i><span>Stock IN/OUT 🔄</span></div>
+            <a href="fill.html" class="nav-btn"><i class="fas fa-clock-rotate-left"></i><span>History 📜</span></a>
+        </nav>
+
+        <div class="system-controls">
+            <button id="theme-toggle" class="ctrl-btn"><i class="fas fa-moon"></i></button>
+            <div class="win-icons">
+                <i class="fas fa-minus"></i>
+                <i class="fas fa-expand"></i>
+                <i class="fas fa-rectangle-xmark close-red"></i>
+            </div>
+        </div>
+    </header>
+
+    <main class="workspace">
+        <div class="container">
+            <!-- Transaction Type Switcher -->
+            <div class="type-switcher">
+                <button class="mode-btn active" id="modeIn" onclick="setTransactionMode('IN')">
+                    <i class="fas fa-file-import"></i> Stock IN (Purchase/Refill)
+                </button>
+                <button class="mode-btn" id="modeOut" onclick="setTransactionMode('OUT')">
+                    <i class="fas fa-file-export"></i> Stock OUT (Sale/Delivery)
+                </button>
+            </div>
+
+            <!-- Main Movement Card -->
+            <div class="movement-card">
+                <div class="card-header">
+                    <h2 id="formTitle">Stock Inward Entry 📥</h2>
+                    <p id="formDesc">Register incoming stock from vendors or production refills.</p>
+                </div>
+
+                <form id="stockMovementForm" class="grid-form">
+                    <!-- Product Selection -->
+                    <div class="field-group">
+                        <label>Product Selection 📦</label>
+                        <select id="productSelect" required>
+                            <option value="">-- Select Product --</option>
+                            <option value="19L">19 Liter Mineral Jar 🍶</option>
+                            <option value="1.5L">1.5 Liter Bottle (Case) 🍼</option>
+                            <option value="0.5L">500ml Bottle (Case) 💧</option>
+                        </select>
+                    </div>
+
+                    <!-- Current Balance Info -->
+                    <div class="field-group">
+                        <label>Current Stock Level ⚖️</label>
+                        <input type="text" id="liveStock" value="1,200 Units" readonly class="readonly-input">
+                    </div>
+
+                    <!-- Quantity Input -->
+                    <div class="field-group">
+                        <label id="qtyLabel">Purchase Quantity 🔢</label>
+                        <input type="number" id="qtyInput" placeholder="Enter amount" required>
+                    </div>
+
+                    <!-- Reference Information (Contextual) -->
+                    <div class="field-group">
+                        <label id="refLabel">Reference (Invoice / Vendor) 🧾</label>
+                        <input type="text" id="refInput" placeholder="Enter Ref # or Entity Name" required>
+                    </div>
+
+                    <!-- Date Selection -->
+                    <div class="field-group">
+                        <label>Entry Date 📅</label>
+                        <input type="date" id="entryDate" required>
+                    </div>
+
+                    <!-- Authorized By -->
+                    <div class="field-group">
+                        <label>Authorized By 👤</label>
+                        <input type="text" placeholder="Manager Name" required>
+                    </div>
+
+                    <!-- Calculation Preview & Actions -->
+                    <div class="form-summary full-width">
+                        <div class="calc-preview">
+                            <span>Projected Balance:</span>
+                            <strong id="newBalance">1,200</strong>
+                        </div>
+                        <div class="action-btns">
+                            <button type="reset" class="btn-clear">Reset 🧹</button>
+                            <button type="submit" class="btn-submit" id="mainSubmitBtn">Commit Transaction 🚀</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <!-- Professional Status Bar -->
+    <footer class="footer-status">
+        <div class="foot-section">Copyright © <strong>SOFTWEBPK</strong> - Logistics Division</div>
+        <div class="foot-section middle">Active Mode: <span id="statusMode">PURCHASE_IN</span></div>
+        <div class="foot-section">System Support: 0092-315-1150070 📞</div>
+    </footer>
+
+    <script src="Stock.js"></script>
+</body>
+</html>

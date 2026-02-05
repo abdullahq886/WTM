@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Workforce Management | AquaFlow Pro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="staff.css">
+</head>
+<body>
+
+    <!-- Professional Software Header -->
+    <header class="top-bar">
+        <div class="header-logo">
+            <div class="logo-circle"><i class="fas fa-droplet"></i></div>
+            <div class="logo-text">
+                <h1>Drinking Water 💧</h1>
+                <p>Inventory Software</p>
+            </div>
+        </div>
+
+        <nav class="icon-nav">
+            <a href="index.html" class="nav-item">
+                <i class="fas fa-chart-line"></i><span>Dashboard</span>
+            </a>
+            <div class="nav-item active">
+                <i class="fas fa-user-group"></i><span>Employees 👤</span>
+            </div>
+            <a href="bot.html" class="nav-item">
+                <i class="fas fa-fill-drip"></i><span>Operations</span>
+            </a>
+            <a href="staff.html" class="nav-item">
+                <i class="fas fa-hand-holding-dollar"></i><span>Payroll</span>
+            </a>
+        </nav>
+
+        <div class="window-controls">
+            <button id="theme-toggle"><i class="fas fa-moon"></i></button>
+            <i class="fas fa-window-minimize"></i>
+            <i class="fas fa-window-maximize"></i>
+            <i class="fas fa-rectangle-xmark close-btn"></i>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="container">
+            <!-- Workforce Overview Stats -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon blue"><i class="fas fa-users-gear"></i></div>
+                    <div class="stat-info">
+                        <h3>Total Staff</h3>
+                        <p class="value">18 Members</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon green"><i class="fas fa-truck-ramp-box"></i></div>
+                    <div class="stat-info">
+                        <h3>On-Field Boys</h3>
+                        <p class="value">12 Active</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon orange"><i class="fas fa-clock-rotate-left"></i></div>
+                    <div class="stat-info">
+                        <h3>Today's Attendance</h3>
+                        <p class="value">95% Present</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Management Tabs -->
+            <div class="tab-box">
+                <button class="tab-link active" onclick="openTab('directory')">Staff Directory 📋</button>
+                <button class="tab-link" onclick="openTab('attendance')">Daily Attendance 📅</button>
+                <button class="tab-link" onclick="openTab('payroll')">Payroll & Commission 💰</button>
+            </div>
+
+            <!-- Tab 1: Staff Directory -->
+            <div id="directory" class="tab-content active">
+                <div class="action-bar">
+                    <input type="text" placeholder="Search employee by name or role...">
+                    <button class="btn-add"><i class="fas fa-user-plus"></i> Add New Employee</button>
+                </div>
+                <div class="table-container">
+                    <table class="staff-table">
+                        <thead>
+                            <tr>
+                                <th>Employee Name 👤</th>
+                                <th>Role / Type 🛠️</th>
+                                <th>Contact Number 📞</th>
+                                <th>Duty Status 🚦</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="staffTableBody">
+                            <!-- Dynamic Data -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Tab 3: Payroll & Commission -->
+            <div id="payroll" class="tab-content">
+                <div class="info-alert">
+                    <i class="fas fa-circle-info"></i> Delivery Boy commissions are calculated based on successful deliveries logged in the operations module.
+                </div>
+                <div class="table-container">
+                    <table class="payroll-table">
+                        <thead>
+                            <tr>
+                                <th>Staff Member</th>
+                                <th>Fixed Salary</th>
+                                <th>Deliveries (Units)</th>
+                                <th>Commission 💵</th>
+                                <th>Total Payable</th>
+                                <th>Payment Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="payrollTableBody">
+                            <!-- Dynamic Data -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <footer class="status-bar">
+        <div class="status-left">© SOFTWEBPK - Human Resource Management</div>
+        <div class="status-right">System Time: <span id="clock">--:--:--</span></div>
+    </footer>
+
+    <script src="staff.js"></script>
+</body>
+</html>

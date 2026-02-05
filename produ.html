@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AquaFlow Pro | Enterprise Water Management</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="produ.css">
+</head>
+<body>
+
+    <!-- Professional Top Bar -->
+    <header class="top-bar">
+        <div class="brand">
+            <div class="logo-circle"><i class="fas fa-droplet"></i></div>
+            <div class="brand-info">
+                <h1>AquaFlow Pro 💧</h1>
+                <p>Enterprise Edition</p>
+            </div>
+        </div>
+        <div class="header-search">
+            <i class="fas fa-search"></i>
+            <input type="text" placeholder="Search Delivery, Customer or Invoice...">
+        </div>
+        <div class="user-controls">
+            <button id="theme-toggle"><i class="fas fa-moon"></i></button>
+            <div class="user-profile">
+                <span>Admin User 👤</span>
+                <img src="https://ui-avatars.com/api/?name=Admin&background=0062BD&color=fff" alt="User">
+            </div>
+        </div>
+    </header>
+
+    <div class="app-layout">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <nav class="side-nav">
+                <a href="index.html" class="nav-link active" data-section="dashboard"><i class="fas fa-chart-pie"></i> Dashboard 📊</a>
+                <a href="#" class="nav-item-head">OPERATIONS ⚙️</a>
+                <a href="Prod.html" class="nav-link" data-section="add"><i class="fas fa-plus-circle"></i> Add Products 📦</a>
+                <a href="fill.html" class="nav-link" data-section="fill"><i class="fas fa-fill-drip"></i> Fill Bottles 🍼</a>
+                <a href="#" class="nav-link" data-section="track"><i class="fas fa-location-crosshairs"></i> Track Stock 🔄</a>
+                <a href="#" class="nav-link" data-section="deliver"><i class="fas fa-truck-fast"></i> Deliver 🚚</a>
+                <a href="#" class="nav-item-head">FINANCE 💰</a>
+                <a href="#" class="nav-link" data-section="monitor"><i class="fas fa-scale-balanced"></i> Monitor Balance ⚖️</a>
+            </nav>
+        </aside>
+
+        <!-- Main Workspace -->
+        <main class="workspace">
+            <div class="container">
+                
+                <!-- 5 Pillars Workflow Section -->
+                <section class="workflow-header">
+                    <h2>System Workflow Overview 🌊</h2>
+                    <p>Manage your water supply lifecycle from production to payment.</p>
+                </section>
+
+                <div class="pillar-grid">
+                    <!-- Pillar 1: Add -->
+                    <div class="pillar-card">
+                        <div class="pillar-icon blue"><i class="fas fa-box-open"></i></div>
+                        <h3>Add Products</h3>
+                        <p>Manage inventory of 19L Jars, 1.5L PET bottles, and dispensers with SKU tracking.</p>
+                        <a href="Prod.html" class="btn-sm">
+  Configure ⚙️
+</a>
+
+                    </div>
+
+                    <!-- Pillar 2: Fill -->
+                    <div class="pillar-card">
+                        <div class="pillar-icon green"><i class="fas fa-flask-vial"></i></div>
+                        <h3>Fill Bottles</h3>
+                        <p>Log daily production units, batch numbers, and quality control timestamps.</p>
+                        <a href="fill.html" class="btn-sm">
+  Log Filling 🧪
+</a>
+
+                    </div>
+
+                    <!-- Pillar 3: Track -->
+                    <div class="pillar-card">
+                        <div class="pillar-icon orange"><i class="fas fa-tags"></i></div>
+                        <h3>Track Stock</h3>
+                        <p>Real-time warehouse visibility. Know exactly what's ready for dispatch.</p>
+                        <a href="Reports.html" class="btn-sm">
+  View Stock 📈
+</a>
+
+                    </div>
+
+                    <!-- Pillar 4: Deliver -->
+                    <div class="pillar-card">
+                        <div class="pillar-icon purple"><i class="fas fa-map-location-dot"></i></div>
+                        <h3>Deliver to Customers</h3>
+                        <p>Assign routes to delivery boys and track successful site drops instantly.</p>
+                       <a href="staff.html" class="btn-sm">
+  Dispatch 🚛
+</a>
+
+                    </div>
+
+                    <!-- Pillar 5: Monitor -->
+                    <div class="pillar-card">
+                        <div class="pillar-icon red"><i class="fas fa-file-invoice-dollar"></i></div>
+                        <h3>Monitor Balance</h3>
+                        <p>Automated customer dues, advance credits, and daily cash-flow reports.</p>
+                        <button class="btn-sm">Audits 📑</button>
+                    </div>
+                </div>
+
+                <!-- Recent Activity Table (Software feel) -->
+                <div class="activity-card">
+                    <div class="card-header">
+                        <h3>Recent Transactions & Logs</h3>
+                        <button class="btn-refresh"><i class="fas fa-rotate"></i> Refresh</button>
+                    </div>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Timestamp ⏰</th>
+                                <th>Activity 🛠️</th>
+                                <th>Operator 👤</th>
+                                <th>Status ✅</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>10:45 AM</td>
+                                <td>Filled 450 Jars (19L)</td>
+                                <td>Saeed Ahmed</td>
+                                <td><span class="status-done">Completed</span></td>
+                            </tr>
+                            <tr>
+                                <td>09:30 AM</td>
+                                <td>Delivery Dispatched to Site-A</td>
+                                <td>Ali Khan</td>
+                                <td><span class="status-pending">In Transit</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <footer class="status-bar">
+        <div class="status-left">© SOFTWEBPK Enterprise v4.0</div>
+        <div class="status-center">System Status: <span class="online">● Operational</span></div>
+        <div class="status-right">DB: <span class="sync">Connected</span></div>
+    </footer>
+
+    <script src="produ.js"></script>
+</body>
+</html>

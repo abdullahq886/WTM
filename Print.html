@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Official Report | AquaFlow Professional</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="Print.css">
+</head>
+<body>
+
+    <!-- UI Header: Hidden during actual printing -->
+    <header class="ui-navbar no-print">
+        <div class="nav-container">
+            <div class="brand">
+                <i class="fas fa-print"></i> 
+                <span>Print Preview 📄</span>
+            </div>
+            <div class="actions">
+                <button id="theme-toggle" class="btn-circle"><i class="fas fa-moon"></i></button>
+                <button onclick="window.print()" class="btn-print">
+                    <i class="fas fa-file-pdf"></i> Print / Save PDF
+                </button>
+                <a href="Reports.html" class="btn-back">Close</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Official Document Container -->
+    <main class="document-container">
+        <div class="a4-page">
+            
+            <!-- Document Letterhead -->
+            <div class="letterhead">
+                <div class="company-logo">
+                    <div class="logo-orb"><i class="fas fa-droplet"></i></div>
+                    <div class="logo-text">
+                        <h2>AQUAFLOW PRO 💧</h2>
+                        <p>Industrial Water Solutions</p>
+                    </div>
+                </div>
+                <div class="doc-meta">
+                    <h1>OFFICIAL REPORT</h1>
+                    <p><strong>Date:</strong> <span id="currentDate"></span></p>
+                    <p><strong>Ref ID:</strong> <span id="refID">#AF-REP-2024-99</span></p>
+                </div>
+            </div>
+
+            <div class="horizontal-line"></div>
+
+            <!-- Client & Project Context (Critical for Construction/FM) -->
+            <div class="context-grid">
+                <div class="context-box">
+                    <label>Client / Site Details 🏗️</label>
+                    <p><strong>Skyline Heights Phase II</strong></p>
+                    <p>Construction Plot #92-B, Industrial Zone</p>
+                    <p>Contact: Project Manager (Site-A)</p>
+                </div>
+                <div class="context-box">
+                    <label>Report Scope 📑</label>
+                    <p><strong>Type:</strong> Inventory & Sales Audit</p>
+                    <p><strong>Period:</strong> Monthly Operations Log</p>
+                    <p><strong>Status:</strong> Verified & Audited</p>
+                </div>
+            </div>
+
+            <!-- Data Table (Matches Reports.html Logic) -->
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>S.No</th>
+                        <th>Resource Description 📦</th>
+                        <th>Category</th>
+                        <th>Qty / Units</th>
+                        <th>Unit Price</th>
+                        <th>Total ($) 💰</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>01</td>
+                        <td>19L Mineral Water Jar 🍶</td>
+                        <td>Bulk Supply</td>
+                        <td>250</td>
+                        <td>2.50</td>
+                        <td>625.00</td>
+                    </tr>
+                    <tr>
+                        <td>02</td>
+                        <td>1.5L PET Bottle Case 🍼</td>
+                        <td>Retail</td>
+                        <td>120</td>
+                        <td>5.00</td>
+                        <td>600.00</td>
+                    </tr>
+                    <tr>
+                        <td>03</td>
+                        <td>Raw Water Tanker (5k Ltr) 🚛</td>
+                        <td>Industrial</td>
+                        <td>04</td>
+                        <td>85.00</td>
+                        <td>340.00</td>
+                    </tr>
+                    <tr>
+                        <td>04</td>
+                        <td>Filter Cartridge (Replacement) ⚙️</td>
+                        <td>Service</td>
+                        <td>02</td>
+                        <td>45.00</td>
+                        <td>90.00</td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="5" class="text-right">Sub Total</td>
+                        <td>$1,655.00</td>
+                    </tr>
+                    <tr>
+                        <td colspan="5" class="text-right">Applied Tax (5%)</td>
+                        <td>$82.75</td>
+                    </tr>
+                    <tr class="grand-total-row">
+                        <td colspan="5" class="text-right"><strong>Grand Total Amount</strong></td>
+                        <td><strong>$1,737.75</strong></td>
+                    </tr>
+                </tfoot>
+            </table>
+
+            <!-- Signature & Validation (Professional Standard) -->
+            <div class="signature-section">
+                <div class="sign-block">
+                    <div class="sign-line"></div>
+                    <p>Prepared By</p>
+                    <p><small>Inventory Manager</small></p>
+                </div>
+                <div class="sign-block">
+                    <div class="sign-line"></div>
+                    <p>Authorized Approval</p>
+                    <p><small>Operations Director</small></p>
+                </div>
+                <div class="sign-block">
+                    <div class="sign-line"></div>
+                    <p>Customer Acknowledgement</p>
+                    <p><small>Stamp & Signature</small></p>
+                </div>
+            </div>
+
+            <!-- Footer for Paper -->
+            <div class="document-footer">
+                <p>This is a computer-generated report and does not require a physical signature unless stamped. <br> 
+                <strong>SOFTWEBPK Enterprise Edition v4.5</strong> | Helpline: 0092-315-1150070</p>
+            </div>
+        </div>
+    </main>
+
+    <script src="Print.js"></script>
+</body>
+</html>

@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>System Control Hub | AquaFlow Pro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="Security.css">
+</head>
+<body>
+
+    <!-- Professional Top Bar -->
+    <header class="top-bar">
+        <div class="brand">
+            <div class="logo-circle"><i class="fas fa-shield-halved"></i></div>
+            <div class="brand-info">
+                <h1>Security Center 🔐</h1>
+                <p>System Admin & Config</p>
+            </div>
+        </div>
+        <div class="header-actions">
+            <button id="theme-toggle" class="icon-btn"><i class="fas fa-moon"></i></button>
+            <div class="user-pill">
+                <span>Super Admin</span>
+                <img src="https://ui-avatars.com/api/?name=Admin&background=0062BD&color=fff" alt="Admin">
+            </div>
+        </div>
+    </header>
+
+    <div class="app-layout">
+        <!-- Configuration Sidebar -->
+        <aside class="sidebar">
+            <nav class="side-nav">
+                <div class="nav-label">General</div>
+                <a href="#" class="nav-link active" data-target="profile"><i class="fas fa-building-user"></i> Company Profile</a>
+                <a href="#" class="nav-link" data-target="units"><i class="fas fa-jug-bottle"></i> Sizes & Units</a>
+                <a href="#" class="nav-link" data-target="finance"><i class="fas fa-percentage"></i> Tax & Discounts</a>
+                
+                <div class="nav-label">Access Control</div>
+                <a href="#" class="nav-link" data-target="users"><i class="fas fa-users-gear"></i> User Management</a>
+                <a href="#" class="nav-link" data-target="roles"><i class="fas fa-user-lock"></i> Roles & Permissions</a>
+                
+                <div class="nav-label">Security Logs</div>
+                <a href="#" class="nav-link" data-target="logs"><i class="fas fa-clipboard-list"></i> Activity Audit</a>
+            </nav>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="workspace">
+            
+            <!-- Panel 1: Company Profile -->
+            <section id="profile-panel" class="settings-panel active">
+                <div class="panel-header">
+                    <h2>Company Identity 🏢</h2>
+                    <p>Information used for invoices and official reports.</p>
+                </div>
+                <div class="form-card">
+                    <div class="input-grid">
+                        <div class="field">
+                            <label>Business Name</label>
+                            <input type="text" value="AquaFlow Pure Water Supply Ltd.">
+                        </div>
+                        <div class="field">
+                            <label>Tax ID / NTN</label>
+                            <input type="text" value="TAX-99281-00">
+                        </div>
+                        <div class="field full">
+                            <label>Registered Address</label>
+                            <textarea rows="2">Plot 12-C, Industrial Estate, Sector G-9, Karachi.</textarea>
+                        </div>
+                    </div>
+                    <button class="btn-save">Update Profile ✅</button>
+                </div>
+            </section>
+
+            <!-- Panel 2: User Management -->
+            <section id="users-panel" class="settings-panel">
+                <div class="panel-header">
+                    <h2>User Accounts 👥</h2>
+                    <button class="btn-add"><i class="fas fa-user-plus"></i> New User</button>
+                </div>
+                <div class="data-card">
+                    <table class="pro-table">
+                        <thead>
+                            <tr>
+                                <th>User ID</th>
+                                <th>Full Name</th>
+                                <th>Role</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>#USR-001</td>
+                                <td><strong>Arshad Mehmood</strong></td>
+                                <td><span class="badge admin">Admin</span></td>
+                                <td><span class="status-on">Active</span></td>
+                                <td><button class="btn-table">Manage</button></td>
+                            </tr>
+                            <tr>
+                                <td>#USR-009</td>
+                                <td><strong>Zafar Iqbal</strong></td>
+                                <td><span class="badge staff">Staff/Operator</span></td>
+                                <td><span class="status-on">Active</span></td>
+                                <td><button class="btn-table">Manage</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Panel 3: Activity Logs -->
+            <section id="logs-panel" class="settings-panel">
+                <div class="panel-header">
+                    <h2>System Activity Audit 📜</h2>
+                    <div class="log-filters">
+                        <input type="text" placeholder="Search logs...">
+                        <button class="btn-sm">Export Logs</button>
+                    </div>
+                </div>
+                <div class="audit-list">
+                    <div class="audit-item danger">
+                        <div class="audit-time">10:45 AM</div>
+                        <div class="audit-desc"><strong>Admin</strong> changed the Tax rate from 5% to 7%</div>
+                    </div>
+                    <div class="audit-item">
+                        <div class="audit-time">09:12 AM</div>
+                        <div class="audit-desc"><strong>Operator_01</strong> logged in from IP 192.168.1.45</div>
+                    </div>
+                    <div class="audit-item warn">
+                        <div class="audit-time">Yesterday</div>
+                        <div class="audit-desc"><strong>System</strong> generated Monthly Sales Report (PDF)</div>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- System Status Footer -->
+    <footer class="status-bar">
+        <div class="status-left">© SOFTWEBPK Enterprise v4.5</div>
+        <div class="status-right">Database Encryption: <span class="secure">AES-256 Active 🛡️</span></div>
+    </footer>
+
+    <script src="Security.js"></script>
+</body>
+</html>
