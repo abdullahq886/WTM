@@ -1,62 +1,118 @@
 document.addEventListener('DOMContentLoaded', () => {
     
-    // 1. Theme Switcher
+    // 1. Theme Management
     const themeBtn = document.getElementById('theme-toggle');
+    const html = document.documentElement;
+
     themeBtn.addEventListener('click', () => {
-        const html = document.documentElement;
-        const currentTheme = html.getAttribute('data-theme');
-        const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+        const isDark = html.getAttribute('data-theme') === 'dark';
+        const newTheme = isDark ? 'light' : 'dark';
         html.setAttribute('data-theme', newTheme);
         themeBtn.innerHTML = newTheme === 'dark' ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+        localStorage.setItem('theme', newTheme);
     });
 
-    // 2. Sample Data (History Logs)
-    const historyData = [
-        { id: "FILL-901", time: "2024-03-21 09:45 AM", product: "19 Liter Jar 🍶", qty: 200, operator: "Zeeshan Ali" },
-        { id: "FILL-902", time: "2024-03-21 11:15 AM", product: "1.5 Liter Bottle 🍼", qty: 500, operator: "Sajid Khan" },
-        { id: "FILL-903", time: "2024-03-20 02:30 PM", product: "500ml Bottle 💧", qty: 1200, operator: "Ahmed Raza" },
-        { id: "FILL-904", time: "2024-03-20 04:00 PM", product: "19 Liter Jar 🍶", qty: 150, operator: "Zeeshan Ali" },
-        { id: "FILL-905", time: "2024-03-19 10:00 AM", product: "19 Liter Jar 🍶", qty: 300, operator: "Sajid Khan" }
-    ];
+    // Persistent Theme on load
+    if (localStorage.getItem('theme') === 'dark') {
+        html.setAttribute('data-theme', 'dark');
+        themeBtn.innerHTML = '<i class="fas fa-sun"></i>';
+    }
 
-    const tableBody = document.getElementById('historyTableBody');
+    // 2. Load and Sync Data
+    loadHistory();
 
-    // 3. Render Table Function
-    const renderTable = (data) => {
+    // 3. Stats Calculation Logic
+    function updateStats(logs) {
+        const totalFilledCount = document.getElementById('totalFilledCount');
+        const todayFilledCount = document.getElementById('todayFilledCount');
+        const logCount = document.getElementById('logCount');
+
+        let totalQty = 0;
+        let todayQty = 0;
+        const today = new Date().toISOString().split('T')[0];
+
+        logs.forEach(log => {
+            const qty = parseInt(log.qty) || 0;
+            totalQty += qty;
+            if (log.time.startsWith(today)) {
+                todayQty += qty;
+            }
+        });
+
+        totalFilledCount.innerText = totalQty.toLocaleString();
+        todayFilledCount.innerText = todayQty.toLocaleString();
+        logCount.innerText = logs.length;
+    }
+
+    // 4. Render Table Function
+    function loadHistory(filterData = null) {
+        // Fetch from localStorage (same key used in bot.js)
+        const logs = JSON.parse(localStorage.getItem('fillingLogs')) || [];
+        const tableBody = document.getElementById('historyTableBody');
         tableBody.innerHTML = "";
-        data.forEach(item => {
+
+        const dataToRender = filterData || logs;
+
+        dataToRender.slice().reverse().forEach(item => {
             const row = `
                 <tr>
-                    <td style="font-weight:700; color:var(--primary)">${item.id}</td>
-                    <td>${item.time}</td>
-                    <td>${item.product}</td>
+                    <td><small>${item.time.replace('T', ' ')}</small></td>
+                    <td><strong>${item.product}</strong></td>
                     <td style="font-weight:700;">${item.qty} Units</td>
+                    <td><b style="color:var(--primary)">${item.total}L</b></td>
                     <td>${item.operator}</td>
-                    <td><span class="status-pill">Verified</span></td>
+                    <td><span class="status-pill">Verified ✅</span></td>
                     <td class="action-icons">
-                        <i class="fas fa-eye" onclick="viewRecord('${item.id}')" title="View Detail"></i>
-                        <i class="fas fa-pen-to-square" onclick="editRecord('${item.id}')" title="Edit Log"></i>
+                        <i class="fas fa-eye" onclick="viewLog('${item.id}')" title="View"></i>
+                        <i class="fas fa-trash-can" onclick="deleteLog('${item.id}')" title="Delete" style="color:#ff5f56"></i>
                     </td>
                 </tr>
             `;
             tableBody.innerHTML += row;
         });
-    };
 
-    renderTable(historyData);
+        if (dataToRender.length === 0) {
+            tableBody.innerHTML = "<tr><td colspan='7' style='text-align:center; padding:30px;'>No production records found.</td></tr>";
+        }
 
-    // 4. Action Handlers
-    window.viewRecord = (id) => {
-        alert(`ACCESSING ARCHIVE: Displaying full quality-check report for Entry ${id}`);
-    };
+        updateStats(logs);
+    }
 
-    window.editRecord = (id) => {
-        alert(`SECURE EDIT: Re-opening entry ${id} for correction. Authorize required.`);
-    };
-
-    // 5. Search Button Feedback
-    document.querySelector('.btn-search').addEventListener('click', () => {
+    // 5. Global Actions (Internal Links & Logic)
+    window.applyFilters = () => {
         const prod = document.getElementById('filterProduct').value;
-        alert(`SYSTEM SEARCH: Filtering audit logs for ${prod}...`);
-    });
+        const oper = document.getElementById('searchOperator').value.toLowerCase();
+        const logs = JSON.parse(localStorage.getItem('fillingLogs')) || [];
+
+        const filtered = logs.filter(log => {
+            const matchProd = (prod === 'all' || log.product.includes(prod));
+            const matchOper = log.operator.toLowerCase().includes(oper);
+            return matchProd && matchOper;
+        });
+
+        loadHistory(filtered);
+    };
+
+    window.resetLogs = () => {
+        document.getElementById('filterProduct').value = 'all';
+        document.getElementById('searchOperator').value = '';
+        loadHistory();
+    };
+
+    window.deleteLog = (id) => {
+        if (confirm("Are you sure you want to delete this log?")) {
+            let logs = JSON.parse(localStorage.getItem('fillingLogs')) || [];
+            logs = logs.filter(log => log.id.toString() !== id.toString());
+            localStorage.setItem('fillingLogs', JSON.stringify(logs));
+            loadHistory();
+        }
+    };
+
+    window.exportData = () => {
+        alert("Preparing System Export... CSV file will be downloaded shortly.");
+    };
+
+    window.viewLog = (id) => {
+        alert(`ACCESSING ARCHIVE: Entry ID #${id} details retrieved from secure database.`);
+    };
 });

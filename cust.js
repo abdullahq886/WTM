@@ -1,68 +1,115 @@
 document.addEventListener('DOMContentLoaded', () => {
-    
-    // Theme Toggle
+    // Initial Load
+    renderCustomers();
+
+    // Theme Logic
     const themeBtn = document.getElementById('theme-toggle');
     themeBtn.addEventListener('click', () => {
         const html = document.documentElement;
         const isDark = html.getAttribute('data-theme') === 'dark';
         html.setAttribute('data-theme', isDark ? 'light' : 'dark');
+        themeBtn.innerHTML = isDark ? '<i class="fas fa-moon"></i>' : '<i class="fas fa-sun"></i>';
     });
 
-    // Mock Customer Data
-    const customers = [
-        { name: "Ali Ahmed", company: "Home", phone: "0312-4455667", address: "St 4, DHA Ph 5", area: "Zone A", balance: -500, lastDel: "2024-03-21" },
-        { name: "Zainab Khan", company: "Beauty Salon", phone: "0321-9988776", address: "Commercial Area 2", area: "Zone B", balance: 1200, lastDel: "2024-03-20" },
-        { name: "Green Builders", company: "Construction Site", phone: "0345-1122334", address: "Sector H-12 Plot 45", area: "Industrial", balance: -4500, lastDel: "2024-03-22" },
-        { name: "Bilal Malik", company: "Home", phone: "0300-5566778", address: "Bahria Town Ph 7", area: "Zone A", balance: 0, lastDel: "2024-03-18" }
-    ];
+    // Handle Form Submit
+    const addForm = document.getElementById('addCustForm');
+    addForm.addEventListener('submit', (e) => {
+        e.preventDefault();
 
-    const renderCustomers = (data) => {
-        const tbody = document.getElementById('customerTableBody');
-        tbody.innerHTML = "";
-        data.forEach(cust => {
-            const balanceText = cust.balance < 0 ? 
-                `<span class="amt-due">Due: $${Math.abs(cust.balance)}</span>` : 
-                (cust.balance > 0 ? `<span class="amt-adv">Adv: $${cust.balance}</span>` : "Clear 0.00");
+        const newCust = {
+            id: Date.now(),
+            name: document.getElementById('cName').value,
+            phone: document.getElementById('cPhone').value,
+            area: document.getElementById('cArea').value,
+            balance: parseFloat(document.getElementById('cBalance').value) || 0,
+            address: document.getElementById('cAddress').value,
+            lastDel: "New Account"
+        };
 
-            const row = `
-                <tr>
-                    <td>
-                        <strong>${cust.name}</strong><br>
-                        <small style="color:#64748b;">${cust.company}</small>
-                    </td>
-                    <td>
-                        <i class="fas fa-phone" style="font-size:0.7rem;"></i> ${cust.phone}<br>
-                        <i class="fas fa-map-marker-alt" style="font-size:0.7rem;"></i> ${cust.address}
-                    </td>
-                    <td>${balanceText}</td>
-                    <td>${cust.lastDel}</td>
-                    <td>
-                        <button class="btn-history" onclick="alert('Viewing History for ${cust.name}')"><i class="fas fa-truck-clock"></i> History</button>
-                    </td>
-                </tr>
-            `;
-            tbody.innerHTML += row;
-        });
-    };
+        // Save to LocalStorage
+        let customers = JSON.parse(localStorage.getItem('myCustomers')) || [];
+        customers.push(newCust);
+        localStorage.setItem('myCustomers', JSON.stringify(customers));
 
-    renderCustomers(customers);
-
-    // Tab Switching Logic
-    window.switchTab = (tab) => {
-        const listView = document.getElementById('listView');
-        const addView = document.getElementById('addView');
-        const btns = document.querySelectorAll('.tab-btn');
-
-        btns.forEach(b => b.classList.remove('active'));
-        
-        if(tab === 'list') {
-            listView.style.display = 'block';
-            addView.style.display = 'none';
-            btns[0].classList.add('active');
-        } else {
-            listView.style.display = 'none';
-            addView.style.display = 'block';
-            btns[1].classList.add('active');
-        }
-    };
+        alert("✅ CUSTOMER REGISTERED SUCCESSFULLY");
+        addForm.reset();
+        switchTab('list'); // Switch back to list after saving
+        renderCustomers();
+    });
 });
+
+// Switch Tabs Function
+function switchTab(tab) {
+    const list = document.getElementById('listView');
+    const add = document.getElementById('addView');
+    const bList = document.getElementById('tabList');
+    const bAdd = document.getElementById('tabAdd');
+
+    if(tab === 'list') {
+        list.style.display = 'block'; add.style.display = 'none';
+        bList.classList.add('active'); bAdd.classList.remove('active');
+    } else {
+        list.style.display = 'none'; add.style.display = 'block';
+        bList.classList.remove('active'); bAdd.classList.add('active');
+    }
+}
+
+// Render Table and Stats
+function renderCustomers() {
+    const customers = JSON.parse(localStorage.getItem('myCustomers')) || [];
+    const tbody = document.getElementById('customerTableBody');
+    const statTotal = document.getElementById('totalClients');
+    const statDues = document.getElementById('totalDues');
+    const statAdv = document.getElementById('totalAdvance');
+
+    tbody.innerHTML = "";
+    let duesTotal = 0;
+    let advTotal = 0;
+
+    customers.forEach(c => {
+        // Stats Calculation
+        if(c.balance < 0) duesTotal += Math.abs(c.balance);
+        if(c.balance > 0) advTotal += c.balance;
+
+        // UI Logic
+        const balClass = c.balance < 0 ? 'amt-due' : (c.balance > 0 ? 'amt-adv' : '');
+        const balText = c.balance < 0 ? `Due: $${Math.abs(c.balance)}` : (c.balance > 0 ? `Adv: $${c.balance}` : '0.00');
+
+        tbody.innerHTML += `
+            <tr>
+                <td><strong>${c.name}</strong><br><small style="color:#64748b;">ID: ${c.id.toString().slice(-5)}</small></td>
+                <td><i class="fas fa-phone"></i> ${c.phone}<br><i class="fas fa-map-marker-alt"></i> ${c.area}</td>
+                <td><span class="${balClass}">${balText}</span></td>
+                <td>${c.lastDel}</td>
+                <td>
+                    <button class="btn-history" onclick="deleteCust(${c.id})"><i class="fas fa-trash"></i></button>
+                </td>
+            </tr>
+        `;
+    });
+
+    // Update Stats Display
+    statTotal.innerText = customers.length;
+    statDues.innerText = `$${duesTotal.toLocaleString()}`;
+    statAdv.innerText = `$${advTotal.toLocaleString()}`;
+
+    if(customers.length === 0) {
+        tbody.innerHTML = "<tr><td colspan='5' style='text-align:center; padding:30px;'>No customers registered yet.</td></tr>";
+    }
+}
+
+function deleteCust(id) {
+    if(confirm("Remove this customer from records?")) {
+        let customers = JSON.parse(localStorage.getItem('myCustomers')) || [];
+        customers = customers.filter(c => c.id !== id);
+        localStorage.setItem('myCustomers', JSON.stringify(customers));
+        renderCustomers();
+    }
+}
+
+function clearDatabase() {
+    if(confirm("CRITICAL: This will delete ALL customers! Continue?")) {
+        localStorage.removeItem('myCustomers');
+        renderCustomers();
+    }
+}

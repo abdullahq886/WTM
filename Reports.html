@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Business Analytics & Reports | AquaFlow Pro</title>
+    <title>Business Intelligence | AquaFlow Pro</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="Reports.css">
 </head>
 <body>
 
-    <!-- Professional Blue Header -->
+    <!-- Professional Top Bar Linked -->
     <header class="top-bar">
         <div class="header-logo">
             <div class="logo-circle"><i class="fas fa-chart-line"></i></div>
@@ -20,36 +20,36 @@
             </div>
         </div>
         <nav class="icon-nav">
-            <a href="index.html" class="nav-item"><i class="fas fa-home"></i><span>Home</span></a>
+            <a href="produ.html" class="nav-item"><i class="fas fa-home"></i><span>Dashboard</span></a>
+            <a href="Prod.html" class="nav-item"><i class="fas fa-box"></i><span>Inventory</span></a>
+            <a href="cust.html" class="nav-item"><i class="fas fa-users"></i><span>Customers</span></a>
             <div class="nav-item active"><i class="fas fa-file-contract"></i><span>All Reports</span></div>
             <a href="Print.html" class="nav-item"><i class="fas fa-print"></i><span>Print Queue</span></a>
         </nav>
         <div class="window-controls">
             <button id="theme-toggle"><i class="fas fa-moon"></i></button>
-            <i class="fas fa-window-minimize"></i>
-            <i class="fas fa-window-maximize"></i>
-            <i class="fas fa-rectangle-xmark close-btn"></i>
+            <i class="fas fa-rectangle-xmark close-btn" onclick="location.href='produ.html'"></i>
         </div>
     </header>
 
     <main class="main-content">
         <div class="container">
-            <!-- 1. Executive Summary Cards -->
+            <!-- 1. Executive Summary Cards (Live Data Linked) -->
             <div class="summary-grid">
                 <div class="sum-card profit">
-                    <h3>Net Profit (MTD) 📈</h3>
-                    <p class="value">$12,450.00</p>
-                    <small>+12% vs last month</small>
+                    <h3>Estimated Inventory Value 💰</h3>
+                    <p class="value" id="statInventoryValue">$0.00</p>
+                    <small>Total cost of current stock</small>
                 </div>
                 <div class="sum-card sales">
-                    <h3>Today's Sales 💧</h3>
-                    <p class="value">450 Units</p>
-                    <small>Projected: 520 Units</small>
+                    <h3>Units Dispatched Today 🚚</h3>
+                    <p class="value" id="statTodaySales">0 Units</p>
+                    <small>Aggregate from Stock-OUT logs</small>
                 </div>
                 <div class="sum-card dues">
                     <h3>Total Receivables 🛑</h3>
-                    <p class="value">$8,210.00</p>
-                    <small>High Priority Follow-ups: 08</small>
+                    <p class="value" id="statTotalDues">$0.00</p>
+                    <small>Sum of all customer balances</small>
                 </div>
             </div>
 
@@ -57,53 +57,46 @@
             <div class="report-container">
                 <aside class="report-sidebar">
                     <ul class="report-menu">
-                        <li class="active" onclick="showReport('sales')"><i class="fas fa-cash-register"></i> Sales Report</li>
-                        <li onclick="showReport('stock')"><i class="fas fa-warehouse"></i> Stock Valuation</li>
-                        <li onclick="showReport('dues')"><i class="fas fa-users-slash"></i> Customer Dues</li>
-                        <li onclick="showReport('pl')"><i class="fas fa-scale-balanced"></i> Profit & Loss</li>
-                        <li onclick="showReport('staff')"><i class="fas fa-user-check"></i> Staff Performance</li>
+                        <li class="active" id="btn-sales" onclick="showReport('sales')"><i class="fas fa-cash-register"></i> Movement Report</li>
+                        <li id="btn-stock" onclick="showReport('stock')"><i class="fas fa-warehouse"></i> Stock Valuation</li>
+                        <li id="btn-dues" onclick="showReport('dues')"><i class="fas fa-users-slash"></i> Customer Dues</li>
+                        <li id="btn-staff" onclick="showReport('staff')"><i class="fas fa-user-check"></i> Staff Performance</li>
                     </ul>
                 </aside>
 
                 <section class="report-view">
                     <div class="report-header">
-                        <h2 id="reportTitle">Sales Analysis Report</h2>
+                        <h2 id="reportTitle">Loading...</h2>
                         <div class="report-filters">
                             <input type="date" id="dateFrom">
                             <span>To</span>
                             <input type="date" id="dateTo">
-                            <button class="btn-primary"><i class="fas fa-sync"></i> Generate</button>
-                            <button class="btn-outline"><i class="fas fa-file-pdf"></i> PDF</button>
-                            <button class="btn-outline"><i class="fas fa-file-excel"></i> Excel</button>
+                            <button class="btn-primary" onclick="syncAllData()"><i class="fas fa-sync"></i> Refresh</button>
+                            <button class="btn-outline" onclick="location.href='Print.html'"><i class="fas fa-file-pdf"></i> Export</button>
                         </div>
                     </div>
 
                     <div class="report-data">
-                        <!-- Chart Mockup (Visual Element) -->
+                        <!-- Chart Mockup -->
                         <div class="chart-box">
                             <div class="bar" style="height: 60%;"></div>
-                            <div class="bar" style="height: 80%;"></div>
-                            <div class="bar" style="height: 40%;"></div>
-                            <div class="bar" style="height: 90%;"></div>
-                            <div class="bar" style="height: 70%;"></div>
-                            <p class="chart-label">Weekly Production vs Sales Visualizer</p>
+                            <div class="bar" style="height: 85%;"></div>
+                            <div class="bar" style="height: 45%;"></div>
+                            <div class="bar" style="height: 95%;"></div>
+                            <div class="bar" style="height: 75%;"></div>
+                            <p class="chart-label">Operational Growth Trends (Live)</p>
                         </div>
 
                         <!-- Data Table -->
                         <div class="table-wrapper">
                             <table class="data-table">
                                 <thead>
-                                    <tr>
-                                        <th>Period / Ref</th>
-                                        <th>Total Sales</th>
-                                        <th>Returns</th>
-                                        <th>Expenses</th>
-                                        <th>Net Amount</th>
-                                        <th>Action</th>
+                                    <tr id="tableHead">
+                                        <!-- Dynamic Head -->
                                     </tr>
                                 </thead>
                                 <tbody id="reportTableBody">
-                                    <!-- Dynamic Data -->
+                                    <!-- Dynamic Data from JS -->
                                 </tbody>
                             </table>
                         </div>
@@ -115,7 +108,7 @@
 
     <footer class="status-bar">
         <div class="status-left">© SOFTWEBPK - Business Intelligence Unit</div>
-        <div class="status-right">Last Database Sync: <span id="syncTime">--:--:--</span></div>
+        <div class="status-right">Database Sync: <span id="syncTime">--:--:--</span> <span class="sync-dot">●</span></div>
     </footer>
 
     <script src="Reports.js"></script>

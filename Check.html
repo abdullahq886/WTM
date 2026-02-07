@@ -3,16 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Stock Balance | Water Inventory Pro</title>
-    <!-- Modern Font -->
+    <title>Stock Balance | AquaFlow Pro</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <!-- Professional Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="Check.css">
 </head>
 <body>
 
-    <!-- Header Section (Software Identity Bar) -->
+    <!-- Header Section -->
     <header class="top-bar">
         <div class="header-logo">
             <div class="logo-circle"><i class="fas fa-droplet"></i></div>
@@ -23,59 +21,53 @@
         </div>
 
         <nav class="icon-nav">
-            <a href="index.html" class="nav-item">
-                <i class="fas fa-chart-line"></i><span>Dashboard 📊</span>
-            </a>
-            <a href="Stock.html" class="nav-item">
-                <i class="fas fa-right-left"></i><span>Stock IN/OUT 🔄</span>
-            </a>
-            <div class="nav-item active">
-                <i class="fas fa-scale-balanced"></i><span>Check Balance ⚖️</span>
-            </div>
+            <!-- Internal Links Properly Linked -->
+            <a href="produ.html" class="nav-item"><i class="fas fa-chart-line"></i><span>Dashboard 📊</span></a>
+            <a href="Stock.html" class="nav-item"><i class="fas fa-right-left"></i><span>Stock IN/OUT 🔄</span></a>
+            <a href="Check.html" class="nav-item active"><i class="fas fa-scale-balanced"></i><span>Check Balance ⚖️</span></a>
+            <a href="Settings.html" class="nav-item"><i class="fas fa-gear"></i><span>Settings ⚙️</span></a>
         </nav>
 
         <div class="window-controls">
             <button id="theme-toggle" title="Switch Theme"><i class="fas fa-moon"></i></button>
-            <i class="fas fa-window-minimize"></i>
-            <i class="fas fa-window-maximize"></i>
-            <i class="fas fa-rectangle-xmark close-btn"></i>
+            <i class="fas fa-rectangle-xmark close-btn" onclick="location.href='produ.html'"></i>
         </div>
     </header>
 
     <main class="dashboard-area">
         <div class="container">
-            <!-- Top Intelligence Cards (Summary) -->
+            <!-- Summary Grid (Live IDs added) -->
             <div class="summary-grid">
                 <div class="sum-card total">
                     <div class="sum-info">
                         <h3>Total Inventory Units</h3>
-                        <p class="count" id="totalCount">4,250</p>
+                        <p class="count" id="totalCountDisplay">0</p>
                     </div>
                     <i class="fas fa-boxes-stacked"></i>
                 </div>
                 <div class="sum-card warning">
                     <div class="sum-info">
                         <h3>Low Stock Alerts ⚠️</h3>
-                        <p class="count">03 Items</p>
+                        <p class="count" id="lowStockCount">0 Items</p>
                     </div>
                     <i class="fas fa-triangle-exclamation"></i>
                 </div>
                 <div class="sum-card critical">
                     <div class="sum-info">
                         <h3>Out of Stock 🚫</h3>
-                        <p class="count">01 Item</p>
+                        <p class="count" id="outOfStockCount">0 Items</p>
                     </div>
                     <i class="fas fa-circle-xmark"></i>
                 </div>
             </div>
 
-            <!-- Detailed Stock Balance Card -->
+            <!-- Table Card -->
             <div class="inventory-card">
                 <div class="card-header">
-                    <h2><i class="fas fa-list-check"></i> Product-wise Stock Balance</h2>
+                    <h2><i class="fas fa-list-check"></i> Live Product Health Audit</h2>
                     <div class="header-actions">
-                        <input type="text" id="searchInput" placeholder="Search product name...">
-                        <button class="btn-sync" id="syncBtn"><i class="fas fa-sync"></i> Sync Data</button>
+                        <input type="text" id="searchInput" placeholder="Search by name or SKU...">
+                        <button class="btn-sync" id="syncBtn"><i class="fas fa-sync"></i> Refresh Data</button>
                     </div>
                 </div>
 
@@ -83,16 +75,16 @@
                     <table class="balance-table">
                         <thead>
                             <tr>
-                                <th>Product Name 📦</th>
+                                <th>Product Details 📦</th>
                                 <th>Category 📂</th>
                                 <th>Current Balance 🔢</th>
-                                <th>Stock Health 📊</th>
-                                <th>Status 🔔</th>
+                                <th>Visual Health 📊</th>
+                                <th>System Status 🔔</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
                         <tbody id="balanceBody">
-                            <!-- Populated by Check.js -->
+                            <!-- Populated by Check.js from LocalStorage -->
                         </tbody>
                     </table>
                 </div>
@@ -100,11 +92,10 @@
         </div>
     </main>
 
-    <!-- Footer Status Bar -->
     <footer class="status-bar">
-        <div class="status-left">© SOFTWEBPK - Real-time Inventory Monitor</div>
+        <div class="status-left">© SOFTWEBPK - Inventory Monitoring Unit</div>
         <div class="status-center">Last Database Sync: <span id="syncTime">--:-- --</span></div>
-        <div class="status-right">System Status: <span class="healthy">Optimal ●</span></div>
+        <div class="status-right">System Stability: <span class="healthy">Optimal ●</span></div>
     </footer>
 
     <script src="Check.js"></script>

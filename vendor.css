@@ -86,7 +86,6 @@ body {
     height: 100vh;
     display: flex;
     flex-direction: column;
-    overflow: hidden; /* Prevents scrollbars on the main interface */
 }
 
 /* --- Header Styling --- */

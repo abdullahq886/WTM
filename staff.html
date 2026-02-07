@@ -6,11 +6,11 @@
     <title>Workforce Management | AquaFlow Pro</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="staff.css">
+    <link rel="stylesheet" href="Staff.css">
 </head>
 <body>
 
-    <!-- Professional Software Header -->
+    <!-- Top Bar with Internal Links -->
     <header class="top-bar">
         <div class="header-logo">
             <div class="logo-circle"><i class="fas fa-droplet"></i></div>
@@ -21,51 +21,42 @@
         </div>
 
         <nav class="icon-nav">
-            <a href="index.html" class="nav-item">
-                <i class="fas fa-chart-line"></i><span>Dashboard</span>
-            </a>
-            <div class="nav-item active">
-                <i class="fas fa-user-group"></i><span>Employees 👤</span>
-            </div>
-            <a href="bot.html" class="nav-item">
-                <i class="fas fa-fill-drip"></i><span>Operations</span>
-            </a>
-            <a href="staff.html" class="nav-item">
-                <i class="fas fa-hand-holding-dollar"></i><span>Payroll</span>
-            </a>
+            <a href="produ.html" class="nav-item"><i class="fas fa-chart-line"></i><span>Dashboard</span></a>
+            <a href="cust.html" class="nav-item"><i class="fas fa-users"></i><span>Customers</span></a>
+            <a href="Staff.html" class="nav-item active"><i class="fas fa-user-group"></i><span>Employees</span></a>
+            <a href="bot.html" class="nav-item"><i class="fas fa-fill-drip"></i><span>Operations</span></a>
+            <a href="Settings.html" class="nav-item"><i class="fas fa-gear"></i><span>Settings</span></a>
         </nav>
 
         <div class="window-controls">
             <button id="theme-toggle"><i class="fas fa-moon"></i></button>
-            <i class="fas fa-window-minimize"></i>
-            <i class="fas fa-window-maximize"></i>
-            <i class="fas fa-rectangle-xmark close-btn"></i>
+            <i class="fas fa-rectangle-xmark close-btn" onclick="location.href='produ.html'"></i>
         </div>
     </header>
 
     <main class="main-content">
         <div class="container">
-            <!-- Workforce Overview Stats -->
+            <!-- Workforce Stats (Live Linking) -->
             <div class="stats-grid">
                 <div class="stat-card">
                     <div class="stat-icon blue"><i class="fas fa-users-gear"></i></div>
                     <div class="stat-info">
                         <h3>Total Staff</h3>
-                        <p class="value">18 Members</p>
+                        <p class="value" id="countTotal">0</p>
                     </div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-icon green"><i class="fas fa-truck-ramp-box"></i></div>
                     <div class="stat-info">
-                        <h3>On-Field Boys</h3>
-                        <p class="value">12 Active</p>
+                        <h3>Field Staff</h3>
+                        <p class="value" id="countField">0</p>
                     </div>
                 </div>
-                <div class="stat-card">
+                <div class="stat-card orange">
                     <div class="stat-icon orange"><i class="fas fa-clock-rotate-left"></i></div>
                     <div class="stat-info">
-                        <h3>Today's Attendance</h3>
-                        <p class="value">95% Present</p>
+                        <h3>Live Attendance</h3>
+                        <p class="value">98%</p>
                     </div>
                 </div>
             </div>
@@ -73,55 +64,83 @@
             <!-- Management Tabs -->
             <div class="tab-box">
                 <button class="tab-link active" onclick="openTab('directory')">Staff Directory 📋</button>
-                <button class="tab-link" onclick="openTab('attendance')">Daily Attendance 📅</button>
-                <button class="tab-link" onclick="openTab('payroll')">Payroll & Commission 💰</button>
+                <button class="tab-link" onclick="openTab('payroll')">Payroll Hub 💰</button>
+                <button class="tab-link" onclick="openTab('register')">Add Employee 👤+</button>
             </div>
 
-            <!-- Tab 1: Staff Directory -->
+            <!-- Tab 1: Directory -->
             <div id="directory" class="tab-content active">
                 <div class="action-bar">
-                    <input type="text" placeholder="Search employee by name or role...">
-                    <button class="btn-add"><i class="fas fa-user-plus"></i> Add New Employee</button>
+                    <input type="text" id="staffSearch" placeholder="Search staff by name..." oninput="filterStaff()">
+                    <button class="btn-clear-db" onclick="resetStaffDB()"><i class="fas fa-sync"></i> Refresh</button>
                 </div>
                 <div class="table-container">
                     <table class="staff-table">
                         <thead>
                             <tr>
-                                <th>Employee Name 👤</th>
+                                <th>Member 👤</th>
                                 <th>Role / Type 🛠️</th>
-                                <th>Contact Number 📞</th>
-                                <th>Duty Status 🚦</th>
-                                <th>Actions</th>
+                                <th>Contact 📞</th>
+                                <th>Status 🚦</th>
+                                <th>Action</th>
                             </tr>
                         </thead>
-                        <tbody id="staffTableBody">
-                            <!-- Dynamic Data -->
-                        </tbody>
+                        <tbody id="staffTableBody"></tbody>
                     </table>
                 </div>
             </div>
 
-            <!-- Tab 3: Payroll & Commission -->
+            <!-- Tab 2: Payroll (Automatic Calculation) -->
             <div id="payroll" class="tab-content">
-                <div class="info-alert">
-                    <i class="fas fa-circle-info"></i> Delivery Boy commissions are calculated based on successful deliveries logged in the operations module.
-                </div>
+                <div class="info-alert"><i class="fas fa-info-circle"></i> Commissions are linked to deliveries logged in the Operations module.</div>
                 <div class="table-container">
                     <table class="payroll-table">
                         <thead>
                             <tr>
                                 <th>Staff Member</th>
-                                <th>Fixed Salary</th>
-                                <th>Deliveries (Units)</th>
+                                <th>Base Salary</th>
+                                <th>Jars Delivered</th>
                                 <th>Commission 💵</th>
                                 <th>Total Payable</th>
-                                <th>Payment Status</th>
                             </tr>
                         </thead>
-                        <tbody id="payrollTableBody">
-                            <!-- Dynamic Data -->
-                        </tbody>
+                        <tbody id="payrollTableBody"></tbody>
                     </table>
+                </div>
+            </div>
+
+            <!-- Tab 3: Register Form -->
+            <div id="register" class="tab-content">
+                <div class="form-card">
+                    <h2>Register New Employee Record 📝</h2>
+                    <form id="addStaffForm" class="grid-form">
+                        <div class="input-group">
+                            <label>Full Name</label>
+                            <input type="text" id="sName" placeholder="Employee Name" required>
+                        </div>
+                        <div class="input-group">
+                            <label>Employee Type</label>
+                            <select id="sType">
+                                <option value="Field">Delivery Boy (Field)</option>
+                                <option value="Office">Office Staff</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <label>Monthly Salary ($)</label>
+                            <input type="number" id="sSalary" placeholder="0.00" required>
+                        </div>
+                        <div class="input-group">
+                            <label>Commission per Jar ($)</label>
+                            <input type="number" id="sComm" value="5">
+                        </div>
+                        <div class="input-group">
+                            <label>Phone Number</label>
+                            <input type="tel" id="sPhone" placeholder="03XX-XXXXXXX" required>
+                        </div>
+                        <div class="form-actions full-width">
+                            <button type="submit" class="btn-save">Confirm Registration ✅</button>
+                        </div>
+                    </form>
                 </div>
             </div>
 
@@ -129,10 +148,10 @@
     </main>
 
     <footer class="status-bar">
-        <div class="status-left">© SOFTWEBPK - Human Resource Management</div>
-        <div class="status-right">System Time: <span id="clock">--:--:--</span></div>
+        <div class="status-left">© SOFTWEBPK - Workforce Manager</div>
+        <div class="status-right">System Time: <span id="clock">00:00:00</span></div>
     </footer>
 
-    <script src="staff.js"></script>
+    <script src="Staff.js"></script>
 </body>
 </html>

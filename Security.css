@@ -1,17 +1,24 @@
-/* --- 1. System Variables & Theme Engine --- */
+/* 
+    DESIGN SYSTEM: Security & Admin Hub
+    Description: Unified CSS for System Security and User Management
+*/
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+/* --- 1. GLOBAL VARIABLES & THEME ENGINE --- */
 :root {
-    /* Brand Colors */
+    /* Brand Identity */
     --primary: #0062BD;
     --primary-hover: #004a8f;
     --primary-soft: rgba(0, 98, 189, 0.08);
     
-    /* Semantic UI Colors */
+    /* Semantic Status Colors */
     --success: #10b981;
     --warning: #f59e0b;
     --danger: #ef4444;
     --info: #3b82f6;
 
-    /* Light Mode Palette */
+    /* Light Mode Surfaces */
     --bg-page: #f4f7fa;
     --bg-sidebar: #ffffff;
     --bg-card: #ffffff;
@@ -19,82 +26,101 @@
     --text-body: #475569;
     --border: #e2e8f0;
     
-    /* Effects */
-    --radius: 12px;
-    --shadow: 0 4px 20px -10px rgba(0, 0, 0, 0.1);
+    /* Layout Constants */
     --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --shadow: 0 4px 20px -10px rgba(0, 0, 0, 0.1);
 }
 
 [data-theme="dark"] {
+    /* Dark Mode Surfaces */
     --bg-page: #0b0f1a;
     --bg-sidebar: #131926;
     --bg-card: #1c2533;
     --text-head: #f1f5f9;
     --text-body: #94a3b8;
     --border: #2d3748;
-    --primary-soft: rgba(255, 255, 255, 0.05);
 }
 
-/* --- 2. Base Foundations --- */
+/* --- 2. CORE FOUNDATIONS --- */
 * { 
     margin: 0; 
     padding: 0; 
     box-sizing: border-box; 
-    font-family: 'Inter', system-ui, -apple-system, sans-serif; 
 }
 
 body {
+    font-family: 'Inter', system-ui, sans-serif;
     background: var(--bg-page);
     color: var(--text-body);
     height: 100vh;
     display: flex;
     flex-direction: column;
-    overflow: hidden; /* Pro ERPs use internal scrolling */
+    overflow: hidden; /* Standard for SaaS: only workspace scrolls */
     transition: background var(--transition);
 }
 
 /* Custom Professional Scrollbar */
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
-::-webkit-scrollbar-thumb:hover { background: var(--primary); }
 
-/* --- 3. Fixed Corporate Header --- */
+/* --- 3. FIXED CORPORATE HEADER --- */
 .top-bar {
     background: var(--primary);
     height: 70px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 30px;
+    display: flex; 
+    align-items: center; 
+    justify-content: space-between; 
+    padding: 0 25px;
     color: #ffffff;
     z-index: 1000;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
 }
 
-.brand { display: flex; align-items: center; gap: 15px; }
+.brand { display: flex; align-items: center; gap: 12px; }
 .logo-circle {
     background: #ffffff;
     color: var(--primary);
     width: 40px; height: 40px;
-    border-radius: 10px;
+    border-radius: 10px; /* Modern Squircle */
     display: flex; align-items: center; justify-content: center;
     font-size: 1.3rem;
     box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
 
-.brand-info h1 { font-size: 1.05rem; font-weight: 700; color: #fff; letter-spacing: -0.01em; }
-.brand-info p { font-size: 0.7rem; opacity: 0.8; color: #fff; font-weight: 500; text-transform: uppercase; }
+.brand-info h1 { font-size: 1rem; font-weight: 700; color: #fff; letter-spacing: -0.01em; }
+.brand-info p { font-size: 0.65rem; opacity: 0.8; color: #fff; font-weight: 500; text-transform: uppercase; }
 
+/* Main Nav inside Header */
+.main-nav { display: flex; flex-grow: 1; justify-content: center; gap: 8px; }
+.nav-item {
+    color: #ffffff;
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 8px 15px;
+    border-radius: 8px;
+    transition: var(--transition);
+    cursor: pointer;
+    font-size: 0.7rem;
+    font-weight: 600;
+    opacity: 0.8;
+}
+.nav-item:hover, .nav-item.active { opacity: 1; background: rgba(255,255,255,0.15); }
+
+.header-actions { display: flex; align-items: center; gap: 15px; }
 .user-pill { 
     display: flex; align-items: center; gap: 10px; 
     background: rgba(255,255,255,0.15); 
-    padding: 6px 15px; border-radius: 50px; 
-    font-size: 0.85rem; font-weight: 600; cursor: pointer;
-    border: 1px solid rgba(255,255,255,0.1);
+    padding: 5px 12px; border-radius: 50px; 
+    font-size: 0.8rem; font-weight: 600; cursor: pointer;
 }
 .user-pill img { width: 28px; height: 28px; border-radius: 50%; border: 1px solid #fff; }
 
-/* --- 4. Main App Layout --- */
+.close-btn { color: #fff; opacity: 0.7; cursor: pointer; transition: 0.2s; }
+.close-btn:hover { opacity: 1; color: #ff5f56; }
+
+/* --- 4. APP LAYOUT (Sidebar & Workspace) --- */
 .app-layout { display: flex; flex: 1; overflow: hidden; }
 
 /* Sidebar Navigation */
@@ -110,17 +136,16 @@ body {
     font-size: 0.65rem;
     font-weight: 800;
     color: var(--text-body);
-    padding: 25px 30px 10px;
+    padding: 20px 30px 10px;
     text-transform: uppercase;
     letter-spacing: 0.1em;
-    opacity: 0.6;
 }
 
-.nav-link {
+.side-link {
     display: flex;
     align-items: center;
     gap: 12px;
-    padding: 14px 30px;
+    padding: 12px 30px;
     color: var(--text-body);
     text-decoration: none;
     font-size: 0.9rem;
@@ -128,15 +153,15 @@ body {
     transition: var(--transition);
 }
 
-.nav-link:hover { color: var(--primary); background: var(--primary-soft); }
-.nav-link.active {
+.side-link:hover { color: var(--primary); background: var(--primary-soft); }
+.side-link.active {
     color: var(--primary);
     background: var(--primary-soft);
     font-weight: 700;
     border-left: 4px solid var(--primary);
 }
 
-/* --- 5. Workspace Area --- */
+/* --- 5. WORKSPACE & PANELS --- */
 .workspace { 
     flex: 1; 
     overflow-y: auto; 
@@ -152,25 +177,25 @@ body {
     to { opacity: 1; transform: translateY(0); }
 }
 
-.panel-header { margin-bottom: 35px; }
-.panel-header h2 { font-size: 1.75rem; color: var(--text-head); font-weight: 800; }
-.panel-header p { font-size: 0.95rem; margin-top: 5px; color: var(--text-body); }
+.panel-header { margin-bottom: 30px; }
+.panel-header h2 { font-size: 1.6rem; color: var(--text-head); font-weight: 800; }
+.panel-header p { font-size: 0.9rem; margin-top: 5px; }
 
-/* --- 6. Forms & Data Cards --- */
+/* --- 6. DATA COMPONENTS (Forms & Tables) --- */
 .form-card, .data-card {
     background: var(--bg-card);
-    padding: 35px;
-    border-radius: var(--radius);
+    padding: 30px;
+    border-radius: 12px;
     border: 1px solid var(--border);
     box-shadow: var(--shadow);
 }
 
-.input-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; }
-.field { display: flex; flex-direction: column; gap: 8px; }
+.input-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
 .field.full { grid-column: 1 / -1; }
+label { font-size: 0.85rem; font-weight: 700; color: var(--text-head); display: block; margin-bottom: 8px; }
 
-label { font-size: 0.85rem; font-weight: 700; color: var(--text-head); }
 input, textarea, select {
+    width: 100%;
     padding: 12px 15px;
     border: 1px solid var(--border);
     border-radius: 8px;
@@ -183,73 +208,66 @@ input:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px
 
 .btn-save {
     background: var(--primary);
-    color: #fff;
-    border: none;
-    padding: 14px 35px;
-    border-radius: 10px;
-    font-weight: 700;
-    cursor: pointer;
-    margin-top: 20px;
-    transition: var(--transition);
+    color: #fff; border: none;
+    padding: 12px 25px; border-radius: 8px;
+    font-weight: 700; cursor: pointer;
+    margin-top: 20px; transition: var(--transition);
 }
 .btn-save:hover { background: var(--primary-hover); transform: translateY(-2px); }
 
-/* --- 7. Tables & Badges --- */
+/* --- 7. TABLES & AUDIT LOGS --- */
 .pro-table { width: 100%; border-collapse: collapse; text-align: left; }
-.pro-table th { padding: 18px 15px; font-size: 0.75rem; color: var(--text-body); text-transform: uppercase; border-bottom: 2px solid var(--border); letter-spacing: 0.05em; }
-.pro-table td { padding: 18px 15px; border-bottom: 1px solid var(--border); font-size: 0.9rem; }
+.pro-table th { padding: 15px; font-size: 0.75rem; color: var(--text-body); text-transform: uppercase; border-bottom: 2px solid var(--border); letter-spacing: 0.05em; }
+.pro-table td { padding: 15px; border-bottom: 1px solid var(--border); font-size: 0.9rem; }
 
-.badge { padding: 5px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 700; }
-.badge.admin { background: #fee2e2; color: #b91c1c; }
-.badge.staff { background: #e0f2fe; color: #0369a1; }
-.status-on { color: var(--success); font-weight: 800; display: flex; align-items: center; gap: 6px; }
-.status-on::before { content: '●'; font-size: 1.2rem; }
+.badge { padding: 4px 10px; border-radius: 20px; font-size: 0.7rem; font-weight: 700; }
+.badge.admin { background: rgba(239, 68, 68, 0.1); color: var(--danger); }
+.badge.staff { background: rgba(59, 130, 246, 0.1); color: var(--info); }
+.status-on { color: var(--success); font-weight: 800; display: flex; align-items: center; gap: 5px; }
 
-/* --- 8. Audit Logs (Industrial Style) --- */
+/* Audit List Items */
 .audit-list { display: flex; flex-direction: column; gap: 12px; }
 .audit-item {
     background: var(--bg-card);
-    padding: 20px 25px;
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    gap: 25px;
+    padding: 20px; border-radius: 10px;
+    display: flex; align-items: center; gap: 20px;
     border: 1px solid var(--border);
     border-left: 5px solid var(--info);
-    font-size: 0.9rem;
+    font-size: 0.85rem;
 }
-.audit-item.danger { border-left-color: var(--danger); }
+.audit-item.success { border-left-color: var(--success); }
 .audit-item.warn { border-left-color: var(--warning); }
+.audit-item.danger { border-left-color: var(--danger); }
 
-.audit-time { font-weight: 700; color: var(--text-body); width: 90px; font-size: 0.8rem; }
+.audit-time { font-weight: 700; color: var(--text-body); width: 80px; }
 .audit-desc { color: var(--text-head); flex: 1; }
 .audit-desc strong { color: var(--primary); }
 
-/* --- 9. Footer Status Bar --- */
+/* --- 8. FOOTER STATUS BAR --- */
 .status-bar {
-    height: 40px;
-    background: #0f172a; /* Sophisticated Midnight */
+    height: 35px;
+    background: #0f172a;
     color: #94a3b8;
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 0 30px;
-    font-size: 0.75rem;
-    border-top: 1px solid rgba(255,255,255,0.05);
+    font-size: 0.7rem;
+    z-index: 1000;
 }
 .secure { color: var(--success); font-weight: 700; }
 
-/* --- 10. Adaptive Response --- */
+/* --- 9. MOBILE RESPONSIVENESS --- */
 @media (max-width: 1024px) {
-    .sidebar { width: 85px; }
-    .nav-link span, .nav-label, .brand-info p { display: none; }
-    .nav-link { justify-content: center; }
-    .workspace { padding: 30px; }
+    .sidebar { width: 80px; }
+    .side-link span, .nav-label, .main-nav span { display: none; }
+    .side-link { justify-content: center; }
 }
 
 @media (max-width: 768px) {
     .app-layout { flex-direction: column; }
-    .sidebar { width: 100%; height: auto; display: flex; overflow-x: auto; padding: 5px; border-right: none; border-bottom: 1px solid var(--border); }
-    .nav-link { white-space: nowrap; padding: 10px 20px; }
+    .sidebar { width: 100%; height: auto; display: flex; overflow-x: auto; border-right: none; border-bottom: 1px solid var(--border); padding: 5px; }
+    .side-link { white-space: nowrap; padding: 10px 20px; }
+    .workspace { padding: 20px; }
     .input-grid { grid-template-columns: 1fr; }
 }

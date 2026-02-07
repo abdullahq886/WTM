@@ -3,32 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>System Settings & Security | AquaFlow ERP</title>
+    <title>Settings | AquaFlow ERP</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="Settings.css">
 </head>
 <body>
 
-    <!-- Header Section (Software Identity) -->
+    <!-- Professional Top Bar Linked to System -->
     <header class="top-bar">
         <div class="header-logo">
             <div class="logo-circle"><i class="fas fa-gears"></i></div>
             <div class="logo-text">
                 <h1>Admin Control Center 🔐</h1>
-                <p>System Configuration & Security</p>
+                <p>AquaFlow Enterprise v4.5</p>
             </div>
         </div>
         <nav class="icon-nav">
-            <a href="index.html" class="nav-item"><i class="fas fa-home"></i><span>Dashboard</span></a>
+            <!-- Corrected Internal Links -->
+            <a href="produ.html" class="nav-item"><i class="fas fa-chart-line"></i><span>Dashboard</span></a>
+            <a href="Prod.html" class="nav-item"><i class="fas fa-box"></i><span>Inventory</span></a>
             <div class="nav-item active"><i class="fas fa-sliders"></i><span>Settings</span></div>
             <a href="Security.html" class="nav-item"><i class="fas fa-shield-halved"></i><span>Security</span></a>
         </nav>
         <div class="window-controls">
-            <button id="theme-toggle"><i class="fas fa-moon"></i></button>
-            <i class="fas fa-minus"></i>
-            <i class="fas fa-expand"></i>
-            <i class="fas fa-rectangle-xmark close-btn"></i>
+            <button id="theme-toggle" title="Toggle Theme"><i class="fas fa-moon"></i></button>
+            <i class="fas fa-rectangle-xmark close-btn" onclick="location.href='produ.html'"></i>
         </div>
     </header>
 
@@ -36,108 +36,73 @@
         <div class="container-fluid">
             <div class="settings-wrapper">
                 
-                <!-- Sidebar for Categories -->
+                <!-- Sidebar Category Selection -->
                 <aside class="settings-sidebar">
                     <ul class="settings-menu">
-                        <li class="active" onclick="showPanel('profile')"><i class="fas fa-building"></i> Company Profile</li>
-                        <li onclick="showPanel('config')"><i class="fas fa-bottle-water"></i> Units & Tax Settings</li>
-                        <li onclick="showPanel('users')"><i class="fas fa-user-shield"></i> User Management</li>
-                        <li onclick="showPanel('roles')"><i class="fas fa-user-lock"></i> Roles & Permissions</li>
-                        <li onclick="showPanel('logs')"><i class="fas fa-clipboard-list"></i> Activity Logs</li>
+                        <li class="active" id="li-profile" onclick="showPanel('profile')"><i class="fas fa-building"></i> Company Profile</li>
+                        <li id="li-config" onclick="showPanel('config')"><i class="fas fa-bottle-water"></i> Units & Tax</li>
+                        <li id="li-users" onclick="showPanel('users')"><i class="fas fa-user-shield"></i> User Management</li>
+                        <li id="li-logs" onclick="showPanel('logs')"><i class="fas fa-clipboard-list"></i> Activity Logs</li>
                     </ul>
                 </aside>
 
-                <!-- Dynamic Panels Area -->
-                <section class="settings-panel" id="panel-content">
+                <!-- Dynamic Workspace -->
+                <section class="settings-panel">
                     
                     <!-- Panel: Company Profile -->
                     <div id="profile-panel" class="panel active">
                         <div class="panel-header">
-                            <h2>Company Profile 🏢</h2>
-                            <p>Manage your business identity and branding on invoices.</p>
+                            <h2>Business Identity 🏢</h2>
+                            <p>Global settings for your water supply enterprise.</p>
                         </div>
-                        <form class="settings-form">
+                        <form class="settings-form" id="companyForm">
                             <div class="input-grid">
                                 <div class="input-group full-width">
-                                    <label>Business Name</label>
-                                    <input type="text" value="AquaFlow Pure Water Supply Ltd.">
+                                    <label>Legal Business Name</label>
+                                    <input type="text" id="compName" value="AquaFlow Pure Water Supply Ltd.">
                                 </div>
                                 <div class="input-group">
-                                    <label>Tax Registration No (NTN/VAT)</label>
-                                    <input type="text" placeholder="e.g. 1234567-8">
+                                    <label>Tax Registration (NTN/VAT)</label>
+                                    <input type="text" value="TAX-99281-00">
                                 </div>
                                 <div class="input-group">
-                                    <label>Contact Email</label>
-                                    <input type="email" value="admin@aquaflow.com">
+                                    <label>Support Email</label>
+                                    <input type="email" value="admin@aquaflow.pro">
                                 </div>
                                 <div class="input-group full-width">
-                                    <label>Business Address</label>
+                                    <label>Headquarters Address</label>
                                     <textarea rows="2">Plot 45, Industrial Area, Sector G-10, Karachi.</textarea>
                                 </div>
                             </div>
-                            <button type="button" class="btn-primary">Update Profile ✅</button>
+                            <button type="submit" class="btn-primary">Save Changes ✅</button>
                         </form>
                     </div>
 
-                    <!-- Panel: Users Management -->
-                    <div id="users-panel" class="panel">
+                    <!-- Panel: Units & Config (Internal Logic) -->
+                    <div id="config-panel" class="panel">
                         <div class="panel-header">
-                            <h2>User Accounts 👥</h2>
-                            <button class="btn-add"><i class="fas fa-plus"></i> Create New User</button>
+                            <h2>Units & Financials ⚖️</h2>
+                            <p>Define bottle sizes and default tax rates.</p>
                         </div>
-                        <div class="table-wrapper">
-                            <table class="settings-table">
-                                <thead>
-                                    <tr>
-                                        <th>Username</th>
-                                        <th>Role</th>
-                                        <th>Last Login</th>
-                                        <th>Status</th>
-                                        <th>Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td><strong>admin_main</strong></td>
-                                        <td><span class="badge admin">Super Admin</span></td>
-                                        <td>Today, 10:45 AM</td>
-                                        <td><span class="status active">Active</span></td>
-                                        <td><button class="btn-sm">Reset Pass</button></td>
-                                    </tr>
-                                    <tr>
-                                        <td><strong>operator_01</strong></td>
-                                        <td><span class="badge staff">Operator</span></td>
-                                        <td>Yesterday, 05:20 PM</td>
-                                        <td><span class="status active">Active</span></td>
-                                        <td><button class="btn-sm">Reset Pass</button></td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                        <div class="input-grid">
+                            <div class="input-group">
+                                <label>Default Tax Rate (%)</label>
+                                <input type="number" value="5">
+                            </div>
+                            <div class="input-group">
+                                <label>Currency Symbol</label>
+                                <input type="text" value="$ (USD)">
+                            </div>
                         </div>
                     </div>
 
-                    <!-- Panel: Activity Logs -->
+                    <!-- Panel: Logs (History Link) -->
                     <div id="logs-panel" class="panel">
                         <div class="panel-header">
-                            <h2>System Activity Audit 📜</h2>
-                            <p>Real-time log of every action performed in the system.</p>
+                            <h2>System Audit Trail 📜</h2>
                         </div>
-                        <div class="log-container">
-                            <div class="log-item">
-                                <span class="log-time">11:30 AM</span>
-                                <span class="log-user">Admin</span>
-                                <span class="log-action">Changed Tax rate from 5% to 7%</span>
-                            </div>
-                            <div class="log-item">
-                                <span class="log-time">10:15 AM</span>
-                                <span class="log-user">Operator_01</span>
-                                <span class="log-action">Added New Product: 19L Spring Water</span>
-                            </div>
-                            <div class="log-item warn">
-                                <span class="log-time">09:00 AM</span>
-                                <span class="log-user">System</span>
-                                <span class="log-action">Backup failed: Storage full alert</span>
-                            </div>
+                        <div class="log-container" id="systemLogs">
+                            <!-- Logs will be populated by JS -->
                         </div>
                     </div>
 
@@ -147,8 +112,8 @@
     </main>
 
     <footer class="status-bar">
-        <div class="status-left">Software Version: v4.2.5 Professional Edition</div>
-        <div class="status-right">Database Sync Status: <span class="sync">Optimal ●</span></div>
+        <div class="status-left">© SOFTWEBPK - Core Settings Module</div>
+        <div class="status-right">System Cloud Sync: <span class="sync">Optimal ●</span></div>
     </footer>
 
     <script src="Settings.js"></script>

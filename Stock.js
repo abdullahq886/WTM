@@ -1,84 +1,117 @@
 let activeMode = 'IN';
 
-// 1. Theme Logic
-const themeBtn = document.getElementById('theme-toggle');
-themeBtn.addEventListener('click', () => {
-    const html = document.documentElement;
-    const isDark = html.getAttribute('data-theme') === 'dark';
-    html.setAttribute('data-theme', isDark ? 'light' : 'dark');
-    themeBtn.innerHTML = isDark ? '<i class="fas fa-moon"></i>' : '<i class="fas fa-sun"></i>';
+document.addEventListener('DOMContentLoaded', () => {
+    loadProductsFromStorage();
+    updateClock();
+    setInterval(updateClock, 1000);
+
+    // Theme Logic
+    const themeBtn = document.getElementById('theme-toggle');
+    themeBtn.addEventListener('click', () => {
+        const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+        document.documentElement.setAttribute('data-theme', isDark ? 'light' : 'dark');
+        themeBtn.innerHTML = isDark ? '<i class="fas fa-moon"></i>' : '<i class="fas fa-sun"></i>';
+    });
+
+    // Qty Input Listener for Live Calculation
+    document.getElementById('qtyInput').addEventListener('input', updateProjectedBalance);
 });
 
-// 2. Transaction Mode Logic
-const setTransactionMode = (mode) => {
+// 1. Load Products from Prod.html's storage
+function loadProductsFromStorage() {
+    const products = JSON.parse(localStorage.getItem('myInventory')) || [];
+    const select = document.getElementById('productSelect');
+    
+    products.forEach(p => {
+        let opt = document.createElement('option');
+        opt.value = p.id; // Use ID to track correctly
+        opt.innerHTML = `${p.name} (${p.sku})`;
+        select.appendChild(opt);
+    });
+}
+
+// 2. Load Balance when Product is selected
+function loadCurrentBalance() {
+    const products = JSON.parse(localStorage.getItem('myInventory')) || [];
+    const selectedId = document.getElementById('productSelect').value;
+    const liveInput = document.getElementById('liveStock');
+    
+    const product = products.find(p => p.id == selectedId);
+    if(product) {
+        liveInput.value = `${product.qty} Units`;
+        updateProjectedBalance();
+    } else {
+        liveInput.value = "0 Units";
+    }
+}
+
+// 3. Mode Toggle Logic
+function setTransactionMode(mode) {
     activeMode = mode;
-    const btnIn = document.getElementById('modeIn');
-    const btnOut = document.getElementById('modeOut');
-    const title = document.getElementById('formTitle');
-    const desc = document.getElementById('formDesc');
-    const refLabel = document.getElementById('refLabel');
-    const refInput = document.getElementById('refInput');
-    const qtyLabel = document.getElementById('qtyLabel');
-    const submitBtn = document.getElementById('mainSubmitBtn');
-    const statusMode = document.getElementById('statusMode');
+    const isIn = mode === 'IN';
+    
+    document.getElementById('modeIn').classList.toggle('active', isIn);
+    document.getElementById('modeOut').classList.toggle('active', !isIn);
+    
+    document.getElementById('formTitle').innerText = isIn ? "Stock Inward Entry 📥" : "Stock Outward Entry 📤";
+    document.getElementById('qtyLabel').innerText = isIn ? "Purchase Quantity 🔢" : "Sale / Delivery Quantity 🔢";
+    document.getElementById('refLabel').innerText = isIn ? "Reference (Invoice / Vendor) 🧾" : "Reference (Delivery Note / Customer) 👥";
+    document.getElementById('statusMode').innerText = isIn ? "PURCHASE_IN" : "SALES_OUT";
+    document.getElementById('mainSubmitBtn').style.background = isIn ? "#16a34a" : "#dc2626";
 
-    if (mode === 'IN') {
-        btnIn.classList.add('active');
-        btnOut.classList.remove('active');
-        title.innerText = "Stock Inward Entry 📥";
-        desc.innerText = "Register incoming stock from vendors or production refills.";
-        refLabel.innerText = "Reference (Invoice # / Vendor Name) 🧾";
-        refInput.placeholder = "e.g. INV-992 / Aqua-Source Ltd";
-        qtyLabel.innerText = "Purchase Quantity 🔢";
-        submitBtn.style.background = "#16a34a";
-        statusMode.innerText = "PURCHASE_IN";
-    } else {
-        btnOut.classList.add('active');
-        btnIn.classList.remove('active');
-        title.innerText = "Stock Outward Entry 📤";
-        desc.innerText = "Dispatch stock for sales, site deliveries, or warehouse outflow.";
-        refLabel.innerText = "Reference (Delivery Note / Customer Name) 👥";
-        refInput.placeholder = "e.g. DN-502 / Green Building Co.";
-        qtyLabel.innerText = "Sale / Delivery Quantity 🔢";
-        submitBtn.style.background = "#dc2626";
-        statusMode.innerText = "SALES_OUT";
-    }
-    updateLiveBalance();
-};
+    updateProjectedBalance();
+}
 
-// 3. Live Balance Calculation Engine
-const updateLiveBalance = () => {
-    const currentStock = 1200; // Mock current stock value
+// 4. Calculation Engine
+function updateProjectedBalance() {
+    const liveVal = parseInt(document.getElementById('liveStock').value) || 0;
     const inputQty = parseInt(document.getElementById('qtyInput').value) || 0;
-    const resultDisplay = document.getElementById('newBalance');
+    const result = document.getElementById('newBalance');
 
-    if (activeMode === 'IN') {
-        resultDisplay.innerText = (currentStock + inputQty).toLocaleString();
-    } else {
-        resultDisplay.innerText = (currentStock - inputQty).toLocaleString();
-    }
-};
+    const final = (activeMode === 'IN') ? (liveVal + inputQty) : (liveVal - inputQty);
+    result.innerText = final.toLocaleString();
+}
 
-document.getElementById('qtyInput').addEventListener('input', updateLiveBalance);
-
-// 4. Set Today's Date by Default
-document.getElementById('entryDate').valueAsDate = new Date();
-
-// 5. Professional Form Feedback
+// 5. Submit Transaction (Internal Linking & Storage Update)
 document.getElementById('stockMovementForm').addEventListener('submit', function(e) {
     e.preventDefault();
-    const btn = document.getElementById('mainSubmitBtn');
-    const originalText = btn.innerHTML;
     
-    btn.innerHTML = "<i class='fas fa-sync fa-spin'></i> Syncing Ledger...";
-    btn.disabled = true;
+    const products = JSON.parse(localStorage.getItem('myInventory')) || [];
+    const selectedId = document.getElementById('productSelect').value;
+    const inputQty = parseInt(document.getElementById('qtyInput').value);
 
-    setTimeout(() => {
-        alert(`TRANSACTION COMMITTED! ✅\nMode: ${activeMode}\nNew Inventory Balance: ${document.getElementById('newBalance').innerText}`);
-        btn.innerHTML = originalText;
-        btn.disabled = false;
-        this.reset();
-        document.getElementById('entryDate').valueAsDate = new Date();
-        updateLiveBalance();
-    }, 1500);
+    // Update the master inventory
+    const index = products.findIndex(p => p.id == selectedId);
+    if(index !== -1) {
+        if(activeMode === 'OUT' && products[index].qty < inputQty) {
+            alert("❌ Insufficient Stock for this delivery!");
+            return;
+        }
+
+        products[index].qty = (activeMode === 'IN') 
+            ? parseInt(products[index].qty) + inputQty 
+            : parseInt(products[index].qty) - inputQty;
+
+        // Save back to storage
+        localStorage.setItem('myInventory', JSON.stringify(products));
+
+        // ALSO: Log this transaction for the History page (fill.html)
+        const historyLog = JSON.parse(localStorage.getItem('fillingLogs')) || [];
+        historyLog.push({
+            id: Date.now(),
+            time: document.getElementById('entryDate').value + "T" + new Date().toLocaleTimeString(),
+            product: products[index].name,
+            qty: (activeMode === 'IN' ? "+" : "-") + inputQty,
+            total: products[index].qty,
+            operator: document.getElementById('authBy').value
+        });
+        localStorage.setItem('fillingLogs', JSON.stringify(historyLog));
+
+        alert("✅ TRANSACTION LOGGED & STOCK UPDATED!");
+        location.reload(); // Refresh to show new balances
+    }
 });
+
+function updateClock() {
+    document.getElementById('clock').innerText = new Date().toLocaleTimeString();
+}

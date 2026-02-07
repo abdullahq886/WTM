@@ -3,134 +3,128 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Our Services | AquaFlow Solutions</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <title>Security Center | AquaFlow Pro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="Services.css">
+    <link rel="stylesheet" href="Security.css">
 </head>
 <body>
 
-    <!-- Professional Nav (Image se inspired) -->
-    <header class="service-nav">
-        <div class="container nav-wrapper">
-            <div class="logo">
-                <i class="fas fa-faucet-drip"></i> AQUA<span>FLOW</span>
+    <!-- Professional Top Bar with System Links -->
+    <header class="top-bar">
+        <div class="brand">
+            <div class="logo-circle"><i class="fas fa-shield-halved"></i></div>
+            <div class="brand-info">
+                <h1>Security Center 🔐</h1>
+                <p>System Admin & Config</p>
             </div>
-            <nav class="icon-menu">
-                <a href="index.html"><i class="fas fa-home"></i><span>Home</span></a>
-                <a href="#" class="active"><i class="fas fa-droplet"></i><span>Services</span></a>
-                <a href="#"><i class="fas fa-chart-line"></i><span>Reports</span></a>
-                <a href="#"><i class="fas fa-gear"></i><span>Settings</span></a>
-                <button id="theme-toggle"><i class="fas fa-moon"></i></button>
-            </nav>
+        </div>
+
+        <!-- Main Module Switcher -->
+        <nav class="main-nav">
+            <a href="produ.html" class="nav-item"><i class="fas fa-chart-line"></i><span>Dashboard</span></a>
+            <a href="Prod.html" class="nav-item"><i class="fas fa-box"></i><span>Inventory</span></a>
+            <a href="cust.html" class="nav-item"><i class="fas fa-users"></i><span>Customers</span></a>
+            <a href="Reports.html" class="nav-item"><i class="fas fa-file-contract"></i><span>Reports</span></a>
+            <a href="Settings.html" class="nav-item"><i class="fas fa-gear"></i><span>Settings</span></a>
+        </nav>
+
+        <div class="header-actions">
+            <button id="theme-toggle" class="icon-btn"><i class="fas fa-moon"></i></button>
+            <div class="user-pill" onclick="location.href='Settings.html'">
+                <span>Super Admin</span>
+                <img src="https://ui-avatars.com/api/?name=Admin&background=0062BD&color=fff" alt="Admin">
+            </div>
+            <i class="fas fa-rectangle-xmark close-btn" onclick="location.href='produ.html'"></i>
         </div>
     </header>
 
-    <!-- Services Hero Section -->
-    <section class="services-hero">
-        <div class="container">
-            <h1>Comprehensive <span class="blue-text">Water Solutions</span></h1>
-            <p>End-to-end management for Construction, Industrial, and Commercial facilities.</p>
-        </div>
-    </section>
+    <div class="app-layout">
+        <!-- Configuration Sidebar -->
+        <aside class="sidebar">
+            <nav class="side-nav">
+                <div class="nav-label">Security Panels</div>
+                <a href="#" class="side-link active" data-target="profile"><i class="fas fa-building-user"></i> Company Profile</a>
+                <a href="#" class="side-link" data-target="users"><i class="fas fa-users-gear"></i> User Management</a>
+                <a href="#" class="side-link" data-target="logs"><i class="fas fa-clipboard-list"></i> Activity Audit</a>
+                
+                <div class="nav-label">External Modules</div>
+                <a href="Settings.html" class="side-link"><i class="fas fa-sliders"></i> Global Settings</a>
+                <a href="Reports.html" class="side-link"><i class="fas fa-print"></i> Print Queue</a>
+            </nav>
+        </aside>
 
-    <!-- Detailed Services List -->
-    <section class="services-detail">
-        <div class="container">
+        <!-- Main Workspace -->
+        <main class="workspace">
             
-            <!-- Service 1: Water Supply Management -->
-            <div class="service-block" id="supply">
-                <div class="service-info">
-                    <span class="service-no">01</span>
-                    <h2>Water Supply Management</h2>
-                    <p>Hassle-free bulk water logistics for large scale operations. We handle everything from source to storage.</p>
-                    <ul class="detail-list">
-                        <li><i class="fas fa-check"></i> Bulk Tanker Deliveries (10k - 50k Liters)</li>
-                        <li><i class="fas fa-check"></i> Automated scheduling for construction phases</li>
-                        <li><i class="fas fa-check"></i> Potable and Non-potable water options</li>
-                    </ul>
-                    <a href="booking.html" class="s-btn">Book Supply</a>
+            <!-- Panel 1: Company Profile -->
+            <section id="profile-panel" class="settings-panel active">
+                <div class="panel-header">
+                    <h2>Company Identity 🏢</h2>
+                    <p>Global branding and tax details for automated invoicing.</p>
                 </div>
-                <div class="service-img">
-                    <img src="https://images.unsplash.com/photo-1581094288338-2314dddb7ecc?auto=format&fit=crop&q=80&w=500" alt="Supply Management">
+                <div class="form-card">
+                    <div class="input-grid">
+                        <div class="field full">
+                            <label>Legal Business Name</label>
+                            <input type="text" id="businessName" value="AquaFlow Pure Water Supply Ltd.">
+                        </div>
+                        <div class="field">
+                            <label>Tax ID / NTN</label>
+                            <input type="text" value="TAX-99281-00">
+                        </div>
+                        <div class="field">
+                            <label>Database Region</label>
+                            <input type="text" value="Karachi Central" readonly>
+                        </div>
+                    </div>
+                    <button class="btn-save" onclick="saveAdminSettings()"><i class="fas fa-cloud-arrow-up"></i> Sync & Save ✅</button>
                 </div>
-            </div>
+            </section>
 
-            <!-- Service 2: Leak Detection -->
-            <div class="service-block reverse" id="leak">
-                <div class="service-info">
-                    <span class="service-no">02</span>
-                    <h2>Acoustic Leak Detection</h2>
-                    <p>Using ultrasonic technology to identify hidden leaks before they cause structural damage to your property.</p>
-                    <ul class="detail-list">
-                        <li><i class="fas fa-check"></i> Non-invasive pipe inspection</li>
-                        <li><i class="fas fa-check"></i> Real-time acoustic mapping</li>
-                        <li><i class="fas fa-check"></i> Detailed damage assessment reports</li>
-                    </ul>
-                    <a href="#" class="s-btn">Get Inspection</a>
+            <!-- Panel 2: User Management (Internal Logic) -->
+            <section id="users-panel" class="settings-panel">
+                <div class="panel-header">
+                    <h2>System User Accounts 👥</h2>
+                    <button class="btn-add"><i class="fas fa-user-plus"></i> New User</button>
                 </div>
-                <div class="service-img">
-                    <img src="https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?auto=format&fit=crop&q=80&w=500" alt="Leak Detection">
+                <div class="data-card">
+                    <table class="pro-table">
+                        <thead>
+                            <tr>
+                                <th>User ID</th>
+                                <th>Full Name</th>
+                                <th>Role</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="userTableBody">
+                            <!-- Dynamic Data -->
+                        </tbody>
+                    </table>
                 </div>
-            </div>
+            </section>
 
-            <!-- Service 3: Water Efficiency Audits -->
-            <div class="service-block" id="audit">
-                <div class="service-info">
-                    <span class="service-no">03</span>
-                    <h2>Water Efficiency Audits</h2>
-                    <p>Reduce your monthly bills and carbon footprint. We analyze usage patterns to optimize consumption.</p>
-                    <ul class="detail-list">
-                        <li><i class="fas fa-check"></i> Comprehensive ROI Analysis</li>
-                        <li><i class="fas fa-check"></i> Sustainability compliance for businesses</li>
-                        <li><i class="fas fa-check"></i> Fixture & System optimization tips</li>
-                    </ul>
-                    <a href="#" class="s-btn">Request Audit</a>
+            <!-- Panel 3: Activity Logs -->
+            <section id="logs-panel" class="settings-panel">
+                <div class="panel-header">
+                    <h2>Activity Audit Trail 📜</h2>
+                    <p>Monitoring all administrative and operational actions.</p>
                 </div>
-                <div class="service-img">
-                    <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=500" alt="Efficiency Audit">
+                <div class="audit-list" id="auditLogContainer">
+                    <!-- Logs injected from JS -->
                 </div>
-            </div>
+            </section>
 
-            <!-- Service 4: Emergency Water Supply -->
-            <div class="service-block reverse" id="emergency">
-                <div class="service-info">
-                    <span class="service-no">04</span>
-                    <h2>24/7 Emergency Supply</h2>
-                    <p>Rapid response team for critical situations like fire-fighting refills or main line bursts.</p>
-                    <ul class="detail-list">
-                        <li><i class="fas fa-check"></i> 60-Minute priority dispatch</li>
-                        <li><i class="fas fa-check"></i> Dedicated emergency hotline</li>
-                        <li><i class="fas fa-check"></i> Backup storage refills</li>
-                    </ul>
-                    <a href="#" class="s-btn alert-btn">Emergency Call</a>
-                </div>
-                <div class="service-img">
-                    <img src="https://images.unsplash.com/photo-1542013936693-884638332954?auto=format&fit=crop&q=80&w=500" alt="Emergency Supply">
-                </div>
-            </div>
+        </main>
+    </div>
 
-            <!-- Service 5: Monitoring & Reporting -->
-            <div class="service-block" id="reporting">
-                <div class="service-info">
-                    <span class="service-no">05</span>
-                    <h2>Smart Monitoring & Reporting</h2>
-                    <p>Live dashboard for Facilities Managers to track every drop of water used in their building.</p>
-                    <ul class="detail-list">
-                        <li><i class="fas fa-check"></i> IoT Cloud-based Dashboards</li>
-                        <li><i class="fas fa-check"></i> Monthly consumption PDF reports</li>
-                        <li><i class="fas fa-check"></i> Automated threshold alerts via Email/SMS</li>
-                    </ul>
-                    <a href="#" class="s-btn">View Demo</a>
-                </div>
-                <div class="service-img">
-                    <img src="https://images.unsplash.com/photo-1551288049-bbbda5366392?auto=format&fit=crop&q=80&w=500" alt="Monitoring">
-                </div>
-            </div>
+    <footer class="status-bar">
+        <div class="status-left">© SOFTWEBPK Enterprise v4.5 | Secured Terminal</div>
+        <div class="status-right">Environment: <span class="secure">Production Server ●</span></div>
+    </footer>
 
-        </div>
-    </section>
-
-    <script src="Services.js"></script>
+    <script src="Security.js"></script>
 </body>
 </html>
