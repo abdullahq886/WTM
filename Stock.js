@@ -1,117 +1,60 @@
-let activeMode = 'IN';
-
 document.addEventListener('DOMContentLoaded', () => {
-    loadProductsFromStorage();
-    updateClock();
-    setInterval(updateClock, 1000);
+    
+    // Default Date Settings
+    const today = new Date().toISOString().split('T')[0];
+    document.getElementById('sDate').value = today;
+    document.getElementById('headerDate').value = today;
 
-    // Theme Logic
+    // 1. Theme Switcher Logic
     const themeBtn = document.getElementById('theme-toggle');
     themeBtn.addEventListener('click', () => {
-        const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-        document.documentElement.setAttribute('data-theme', isDark ? 'light' : 'dark');
+        const html = document.documentElement;
+        const isDark = html.getAttribute('data-theme') === 'dark';
+        html.setAttribute('data-theme', isDark ? 'light' : 'dark');
         themeBtn.innerHTML = isDark ? '<i class="fas fa-moon"></i>' : '<i class="fas fa-sun"></i>';
     });
 
-    // Qty Input Listener for Live Calculation
-    document.getElementById('qtyInput').addEventListener('input', updateProjectedBalance);
-});
+    // 2. Form Submission to Table
+    const stockForm = document.getElementById('stockForm');
+    const stockBody = document.getElementById('stockBody');
+    let sno = 1;
 
-// 1. Load Products from Prod.html's storage
-function loadProductsFromStorage() {
-    const products = JSON.parse(localStorage.getItem('myInventory')) || [];
-    const select = document.getElementById('productSelect');
-    
-    products.forEach(p => {
-        let opt = document.createElement('option');
-        opt.value = p.id; // Use ID to track correctly
-        opt.innerHTML = `${p.name} (${p.sku})`;
-        select.appendChild(opt);
+    stockForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        // Getting values
+        const date = document.getElementById('sDate').value;
+        const salesman = document.getElementById('sSalesman').value;
+        const product = document.getElementById('sProduct').value;
+        const qty = document.getElementById('sQty').value;
+        const status = document.getElementById('sStatus').value;
+        const remarks = document.getElementById('sRemarks').value;
+
+        // Creating New Table Row
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>${sno++}</td>
+            <td>${date}</td>
+            <td><strong>${product}</strong></td>
+            <td>${qty}</td>
+            <td style="color: ${status.includes('OUT') ? 'red' : 'green'}; font-weight: bold;">${status}</td>
+            <td>${salesman}</td>
+            <td>${remarks}</td>
+        `;
+
+        // Adding Row to the top of table
+        stockBody.insertBefore(row, stockBody.firstChild);
+
+        alert("✅ Stock Entry Success!");
+        stockForm.reset();
+        document.getElementById('sDate').value = today; // Reset to today's date
     });
-}
 
-// 2. Load Balance when Product is selected
-function loadCurrentBalance() {
-    const products = JSON.parse(localStorage.getItem('myInventory')) || [];
-    const selectedId = document.getElementById('productSelect').value;
-    const liveInput = document.getElementById('liveStock');
-    
-    const product = products.find(p => p.id == selectedId);
-    if(product) {
-        liveInput.value = `${product.qty} Units`;
-        updateProjectedBalance();
-    } else {
-        liveInput.value = "0 Units";
-    }
-}
-
-// 3. Mode Toggle Logic
-function setTransactionMode(mode) {
-    activeMode = mode;
-    const isIn = mode === 'IN';
-    
-    document.getElementById('modeIn').classList.toggle('active', isIn);
-    document.getElementById('modeOut').classList.toggle('active', !isIn);
-    
-    document.getElementById('formTitle').innerText = isIn ? "Stock Inward Entry 📥" : "Stock Outward Entry 📤";
-    document.getElementById('qtyLabel').innerText = isIn ? "Purchase Quantity 🔢" : "Sale / Delivery Quantity 🔢";
-    document.getElementById('refLabel').innerText = isIn ? "Reference (Invoice / Vendor) 🧾" : "Reference (Delivery Note / Customer) 👥";
-    document.getElementById('statusMode').innerText = isIn ? "PURCHASE_IN" : "SALES_OUT";
-    document.getElementById('mainSubmitBtn').style.background = isIn ? "#16a34a" : "#dc2626";
-
-    updateProjectedBalance();
-}
-
-// 4. Calculation Engine
-function updateProjectedBalance() {
-    const liveVal = parseInt(document.getElementById('liveStock').value) || 0;
-    const inputQty = parseInt(document.getElementById('qtyInput').value) || 0;
-    const result = document.getElementById('newBalance');
-
-    const final = (activeMode === 'IN') ? (liveVal + inputQty) : (liveVal - inputQty);
-    result.innerText = final.toLocaleString();
-}
-
-// 5. Submit Transaction (Internal Linking & Storage Update)
-document.getElementById('stockMovementForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-    
-    const products = JSON.parse(localStorage.getItem('myInventory')) || [];
-    const selectedId = document.getElementById('productSelect').value;
-    const inputQty = parseInt(document.getElementById('qtyInput').value);
-
-    // Update the master inventory
-    const index = products.findIndex(p => p.id == selectedId);
-    if(index !== -1) {
-        if(activeMode === 'OUT' && products[index].qty < inputQty) {
-            alert("❌ Insufficient Stock for this delivery!");
-            return;
-        }
-
-        products[index].qty = (activeMode === 'IN') 
-            ? parseInt(products[index].qty) + inputQty 
-            : parseInt(products[index].qty) - inputQty;
-
-        // Save back to storage
-        localStorage.setItem('myInventory', JSON.stringify(products));
-
-        // ALSO: Log this transaction for the History page (fill.html)
-        const historyLog = JSON.parse(localStorage.getItem('fillingLogs')) || [];
-        historyLog.push({
-            id: Date.now(),
-            time: document.getElementById('entryDate').value + "T" + new Date().toLocaleTimeString(),
-            product: products[index].name,
-            qty: (activeMode === 'IN' ? "+" : "-") + inputQty,
-            total: products[index].qty,
-            operator: document.getElementById('authBy').value
+    // Sidebar/Nav Internal Linking Simulation
+    document.querySelectorAll('.nav-item').forEach(item => {
+        item.addEventListener('click', () => {
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            item.classList.add('active');
         });
-        localStorage.setItem('fillingLogs', JSON.stringify(historyLog));
-
-        alert("✅ TRANSACTION LOGGED & STOCK UPDATED!");
-        location.reload(); // Refresh to show new balances
-    }
+    });
 });
-
-function updateClock() {
-    document.getElementById('clock').innerText = new Date().toLocaleTimeString();
-}

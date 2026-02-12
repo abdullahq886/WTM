@@ -3,107 +3,152 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Stock Movement | AquaFlow ERP</title>
+    <title>Stock IN/OUT | AquaFlow Pro</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="Stock.css">
 </head>
 <body>
 
-    <header class="software-header">
-        <div class="brand-unit">
-            <div class="logo-orb"><i class="fas fa-droplet"></i></div>
-            <div class="brand-text">
+    <!-- Professional Top Bar -->
+    <header class="top-bar">
+        <div class="header-logo">
+            <div class="logo-circle"><i class="fas fa-droplet"></i></div>
+            <div class="logo-text">
                 <h1>Drinking Water 💧</h1>
-                <p>Inventory Software Pro</p>
+                <p>Inventory Software</p>
             </div>
         </div>
-
+        
         <nav class="software-nav">
-            <!-- Internal Links Updated -->
-            <a href="produ.html" class="nav-btn"><i class="fas fa-chart-line"></i><span>Dashboard 📊</span></a>
-            <div class="nav-btn active"><i class="fas fa-right-left"></i><span>Stock IN/OUT 🔄</span></div>
-            <a href="fill.html" class="nav-btn"><i class="fas fa-clock-rotate-left"></i><span>History 📜</span></a>
-            <a href="Settings.html" class="nav-btn"><i class="fas fa-gear"></i><span>Settings ⚙️</span></a>
+            <a href="index.html" class="nav-item"><i class="fas fa-chart-line"></i><span>Dashboard 📊</span></a>
+            <a href="produ.html" class="nav-item active"><i class="fas fa-box"></i><span>Products 📦</span></a>
+            <a href="cust.html" class="nav-item"><i class="fas fa-users"></i><span>Customers 👥</span></a>
+            <a href="staff.html" class="nav-item"><i class="fas fa-user-tie"></i><span>Employee 👤</span></a>
+            <a href="Reports.html" class="nav-item"><i class="fas fa-file-invoice"></i><span>Reports 📑</span></a>
+            <a href="Settings.html" class="nav-item"><i class="fas fa-gears"></i><span>Setting ⚙️</span></a>
         </nav>
 
-        <div class="system-controls">
-            <button id="theme-toggle" class="ctrl-btn"><i class="fas fa-moon"></i></button>
-            <div class="win-icons">
-                <i class="fas fa-rectangle-xmark close-red" onclick="location.href='produ.html'"></i>
-            </div>
+        <div class="window-controls">
+            <button id="theme-toggle"><i class="fas fa-moon"></i></button>
+            <i class="fas fa-minus"></i>
+            <i class="fas fa-expand"></i>
+            <i class="fas fa-rectangle-xmark close-red"></i>
         </div>
     </header>
 
+    <div class="user-strip">
+        <span><b>User:</b> Tahir Qureshi 👤</span>
+    </div>
+
+    <!-- Page Content -->
     <main class="workspace">
-        <div class="container">
-            <div class="type-switcher">
-                <button class="mode-btn active" id="modeIn" onclick="setTransactionMode('IN')">
-                    <i class="fas fa-file-import"></i> Stock IN (Purchase)
-                </button>
-                <button class="mode-btn" id="modeOut" onclick="setTransactionMode('OUT')">
-                    <i class="fas fa-file-export"></i> Stock OUT (Sale)
-                </button>
-            </div>
-
-            <div class="movement-card">
-                <div class="card-header">
-                    <h2 id="formTitle">Stock Inward Entry 📥</h2>
-                    <p id="formDesc">Register incoming stock from vendors or production refills.</p>
+        <div class="page-title-row">
+            <h2>Stock IN /OUT 🔄</h2>
+            <div class="top-filters">
+                <div class="filter-group">
+                    <label>Salesman</label>
+                    <select><option>All Salesman 👥</option></select>
                 </div>
-
-                <form id="stockMovementForm" class="grid-form">
-                    <div class="field-group">
-                        <label>Product Selection 📦</label>
-                        <select id="productSelect" required onchange="loadCurrentBalance()">
-                            <option value="">-- Select Product --</option>
-                            <!-- Options will be loaded dynamically from storage -->
-                        </select>
-                    </div>
-
-                    <div class="field-group">
-                        <label>Live Database Balance ⚖️</label>
-                        <input type="text" id="liveStock" value="0 Units" readonly class="readonly-input">
-                    </div>
-
-                    <div class="field-group">
-                        <label id="qtyLabel">Purchase Quantity 🔢</label>
-                        <input type="number" id="qtyInput" placeholder="Enter amount" required>
-                    </div>
-
-                    <div class="field-group">
-                        <label id="refLabel">Reference (Invoice / Vendor) 🧾</label>
-                        <input type="text" id="refInput" placeholder="Ref # or Name" required>
-                    </div>
-
-                    <div class="field-group">
-                        <label>Entry Date 📅</label>
-                        <input type="date" id="entryDate" required>
-                    </div>
-
-                    <div class="field-group">
-                        <label>Authorized By 👤</label>
-                        <input type="text" id="authBy" placeholder="Manager Name" required>
-                    </div>
-
-                    <div class="form-summary full-width">
-                        <div class="calc-preview">
-                            <span>Projected Balance:</span>
-                            <strong id="newBalance">0</strong>
-                        </div>
-                        <div class="action-btns">
-                            <button type="submit" class="btn-submit" id="mainSubmitBtn">Commit Transaction 🚀</button>
-                        </div>
-                    </div>
-                </form>
+                <div class="filter-group">
+                    <label>Date:</label>
+                    <input type="date" id="headerDate">
+                </div>
+                <button class="btn-select">Select</button>
             </div>
+        </div>
+
+        <div class="main-grid">
+            <!-- LEFT: Input Form -->
+            <section class="form-section">
+                <div class="group-box">
+                    <span class="group-label">STOCK IN OUT</span>
+                    <form id="stockForm">
+                        <div class="input-field">
+                            <label>Date:</label>
+                            <input type="date" id="sDate" required>
+                        </div>
+                        <div class="input-field">
+                            <label>Salesman</label>
+                            <select id="sSalesman" required>
+                                <option value="">SELECT SALESMAN 👤</option>
+                                <option>Ali Ahmed</option>
+                                <option>Zeeshan Khan</option>
+                            </select>
+                        </div>
+                        <div class="input-field">
+                            <label>Product</label>
+                            <select id="sProduct" required>
+                                <option value="">SELECT PRODUCT 📦</option>
+                                <option value="1-19 Litr">1-19 Litr 🍶</option>
+                                <option value="2-600ml">2-600ml 💧</option>
+                                <option value="3-1.5litr">3-1.5litr 🍼</option>
+                                <option value="4-Caps">4-Caps ⚙️</option>
+                            </select>
+                        </div>
+                        <div class="input-row">
+                            <div class="input-field">
+                                <label>Qty:</label>
+                                <input type="number" id="sQty" class="qty-yellow" required>
+                            </div>
+                            <div class="input-field">
+                                <label>Stock Status:</label>
+                                <select id="sStatus" required>
+                                    <option value="">SELECT STATUS 🚦</option>
+                                    <option>Stock IN Fill 📥</option>
+                                    <option>Stock OUT 📤</option>
+                                    <option>Stock IN (Empty) ♻️</option>
+                                    <option>Stock OUT (Empty) 🚚</option>
+                                    <option>Damage ❌</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="input-field">
+                            <label>Remarks</label>
+                            <input type="text" id="sRemarks">
+                        </div>
+
+                        <div class="btn-group">
+                            <button type="submit" class="btn-blue">Set New Stock ➕</button>
+                            <button type="button" class="btn-blue">Update Stock 🔄</button>
+                            <button type="reset" class="btn-red">Cancel 🚫</button>
+                        </div>
+                    </form>
+                </div>
+            </section>
+
+            <!-- RIGHT: Data Table -->
+            <section class="table-section">
+                <div class="group-box">
+                    <span class="group-label">Stock IN - OUT</span>
+                    <div class="table-container">
+                        <table id="stockTable">
+                            <thead>
+                                <tr>
+                                    <th>SNO</th>
+                                    <th>Date</th>
+                                    <th>Product Name</th>
+                                    <th>Qty</th>
+                                    <th>Status</th>
+                                    <th>Salesman</th>
+                                    <th>Remarks</th>
+                                </tr>
+                            </thead>
+                            <tbody id="stockBody">
+                                <!-- Data will be added here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
         </div>
     </main>
 
-    <footer class="footer-status">
-        <div class="foot-section">© SOFTWEBPK - Inventory Link Active</div>
-        <div class="foot-section middle">Active Mode: <span id="statusMode">PURCHASE_IN</span></div>
-        <div class="foot-section">System Time: <span id="clock">00:00:00</span></div>
+    <!-- Professional Footer Bar -->
+    <footer class="status-bar">
+        <div class="foot-left">Copyright all rights reserved by <b>SOFTWEBPK</b></div>
+        <div class="foot-center">App Code: <b>RG-Demo</b></div>
+        <div class="foot-right">Help Line: <b>0092-315-1150070</b> 📞</div>
     </footer>
 
     <script src="Stock.js"></script>

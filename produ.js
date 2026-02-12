@@ -1,77 +1,82 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Dashboard load hote hi data sync karein
-    updateDashboard();
+    displayProducts();
 
-    // 1. Theme Logic
+    // 1. Theme Toggle
     const themeBtn = document.getElementById('theme-toggle');
     themeBtn.addEventListener('click', () => {
         const html = document.documentElement;
         const newTheme = html.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
         html.setAttribute('data-theme', newTheme);
-        themeBtn.innerHTML = newTheme === 'dark' ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
     });
 
-    // 2. Clock Logic
-    setInterval(() => {
-        const clock = document.getElementById('digitalClock');
-        clock.innerText = new Date().toLocaleTimeString();
-    }, 1000);
+    // 2. Form Submit & Store Data
+    const productForm = document.getElementById('productForm');
+    productForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        const name = document.getElementById('pName').value;
+        const price = document.getElementById('pPrice').value;
+        const type = document.getElementById('pType').value;
+
+        const newProduct = {
+            id: Date.now(),
+            name: name,
+            price: price,
+            type: type
+        };
+
+        // Get from storage
+        let products = JSON.parse(localStorage.getItem('waterInventory')) || [];
+        products.push(newProduct);
+        
+        // Save to storage
+        localStorage.setItem('waterInventory', JSON.stringify(products));
+
+        alert("✅ Product Stored Successfully!");
+        productForm.reset();
+        displayProducts();
+    });
 });
 
-// 3. Update Dashboard Stats from ALL Storage keys
-function updateDashboard() {
-    // Storage se alag alag keys ka data uthayein
-    const inventory = JSON.parse(localStorage.getItem('myInventory')) || [];
-    const customers = JSON.parse(localStorage.getItem('myCustomers')) || [];
-    const fillingLogs = JSON.parse(localStorage.getItem('fillingLogs')) || [];
-
-    // Stats calculation
-    document.getElementById('stat-products').innerText = inventory.length;
-    document.getElementById('stat-customers').innerText = customers.length;
+// 3. Display Data in Table
+function displayProducts() {
+    const products = JSON.parse(localStorage.getItem('waterInventory')) || [];
+    const tbody = document.getElementById('productData');
+    const itemCount = document.getElementById('itemCount');
     
-    // Filling Total (Sirf aaj ka example)
-    const todayFilling = fillingLogs.reduce((acc, log) => acc + parseInt(log.qty || 0), 0);
-    document.getElementById('stat-filling').innerText = todayFilling;
+    tbody.innerHTML = "";
 
-    // Dues Calculation (Udhaar)
-    const totalDues = customers.reduce((acc, cust) => acc + (cust.balance < 0 ? Math.abs(cust.balance) : 0), 0);
-    document.getElementById('stat-balance').innerText = `$ ${totalDues.toLocaleString()}`;
-
-    // Update Activity Table (Merge last entries of all types)
-    renderMasterLog(inventory, customers, fillingLogs);
-}
-
-function renderMasterLog(inv, cust, fill) {
-    const logBody = document.getElementById('masterLogBody');
-    logBody.innerHTML = "";
-
-    // Sirf top 5 latest entries dikhane ke liye merge logic
-    const activities = [
-        ...inv.slice(-2).map(item => ({ time: 'Recently', cat: 'Inventory', detail: `Added ${item.name}`, status: 'Stored' })),
-        ...fill.slice(-2).map(item => ({ time: 'Today', cat: 'Production', detail: `Filled ${item.qty} units of ${item.product}`, status: 'Completed' })),
-        ...cust.slice(-1).map(item => ({ time: 'New', cat: 'CRM', detail: `New Client: ${item.name}`, status: 'Active' }))
-    ];
-
-    activities.forEach(act => {
-        logBody.innerHTML += `
-            <tr>
-                <td>${act.time}</td>
-                <td><span style="font-weight:700; color:var(--primary)">${act.cat}</span></td>
-                <td>${act.detail}</td>
-                <td><span style="color:#22c55e;">● ${act.status}</span></td>
-            </tr>
+    products.forEach((p, index) => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>${index + 1}</td>
+            <td>${p.name}</td>
+            <td>${p.price}</td>
+            <td>${p.type}</td>
+            <td><button onclick="deleteProduct(${p.id})" style="color:red; border:none; background:none; cursor:pointer;"><i class="fas fa-trash"></i></button></td>
         `;
+        // Row selection effect like the image
+        row.onclick = () => {
+            document.querySelectorAll('tr').forEach(r => r.classList.remove('selected-row'));
+            row.classList.add('selected-row');
+        };
+        tbody.appendChild(row);
     });
 
-    if(activities.length === 0) {
-        logBody.innerHTML = "<tr><td colspan='4' style='text-align:center; padding:20px;'>No activity data found in storage.</td></tr>";
+    if(itemCount) itemCount.innerText = products.length;
+}
+
+// 4. Delete Function
+function deleteProduct(id) {
+    if(confirm("Are you sure?")) {
+        let products = JSON.parse(localStorage.getItem('waterInventory')) || [];
+        products = products.filter(p => p.id !== id);
+        localStorage.setItem('waterInventory', JSON.stringify(products));
+        displayProducts();
     }
 }
 
-// Data reset function (X button par)
-function clearAllData() {
-    if(confirm("Confirm Reset: This will clear all products, customers and logs!")) {
-        localStorage.clear();
-        location.reload();
-    }
+// 5. Reset Form
+function resetForm() {
+    document.getElementById('productForm').reset();
 }
