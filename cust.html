@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Customer CRM | AquaFlow Pro</title>
+    <title>Employee Management | AquaFlow Pro</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="cust.css">
+    <link rel="stylesheet" href="Staff.css">
 </head>
 <body>
 
-    <!-- Top Bar with Internal Links -->
+    <!-- Professional Software Header -->
     <header class="top-bar">
         <div class="header-logo">
             <div class="logo-circle"><i class="fas fa-droplet"></i></div>
@@ -19,110 +19,182 @@
                 <p>Inventory Software</p>
             </div>
         </div>
+        
+        <nav class="software-nav">
+            <a href="index.html" class="nav-item"><i class="fas fa-chart-line"></i><span>Dashboard 📊</span></a>
+            <a href="Prod.html" class="nav-item"><i class="fas fa-box"></i><span>Products 📦</span></a>
+            <div class="nav-item dropdown">
+  
+  <a href="#" class="nav-link">
+    <i class="fas fa-users"></i>
+    <span>Customers 👥</span>
+  </a>
 
-        <nav class="icon-nav">
-            <a href="produ.html" class="nav-item"><i class="fas fa-chart-line"></i><span>Dashboard 📊</span></a>
-            <a href="cust.html" class="nav-item active"><i class="fas fa-users"></i><span>Customers 👥</span></a>
-            <a href="Stock.html" class="nav-item"><i class="fas fa-right-left"></i><span>Stock 🔄</span></a>
-            <a href="Settings.html" class="nav-item"><i class="fas fa-gear"></i><span>Settings ⚙️</span></a>
+  <ul class="dropdown-menu">
+    <li><a href="cust.html">New Customer</a></li>
+    <li><a href="order.html">New Sales Order</a></li>
+    <li>
+  <a href="order.html" onclick="confirmPayment(); return false;">
+    Add Customer Payment
+  </a>
+</li>
+
+    <li><a href="ledger.html">Customer Ledger</a></li>
+    <li><a href="#">Customer Security Amount</a></li>
+    <li><a href="#">Customer Balance Sheet</a></li>
+    <li><a href="pr">Set Product Price To Customer</a></li>
+    <li><a href="#">Set Customer Pin From Google Map</a></li>
+  </ul>
+
+</div>
+
+            
+            <a href="vendor.html" class="nav-item"><i class="fas fa-truck"></i><span>Vendor 🚛</span></a>
+            <a href="Staff.html" class="nav-item active"><i class="fas fa-user-tie"></i><span>Employee 👤</span></a>
+            <a href="Reports.html" class="nav-item"><i class="fas fa-file-invoice"></i><span>Reports 📑</span></a>
+            <a href="Settings.html" class="nav-item"><i class="fas fa-gears"></i><span>Setting ⚙️</span></a>
         </nav>
 
         <div class="window-controls">
-            <button id="theme-toggle"><i class="fas fa-moon"></i></button>
+            <button id="theme-toggle" title="Switch Theme"><i class="fas fa-moon"></i></button>
+            <i class="fas fa-window-minimize"></i>
             <i class="fas fa-rectangle-xmark close-btn" onclick="location.href='produ.html'"></i>
         </div>
     </header>
 
-    <main class="main-content">
-        <div class="container">
-            <!-- Stats Linked to JS -->
-            <div class="summary-grid">
-                <div class="sum-card">
-                    <h3>Total Clients 👥</h3>
-                    <p class="count" id="totalClients">0</p>
-                </div>
-                <div class="sum-card due">
-                    <h3>Total Receivables 🔴</h3>
-                    <p class="count" id="totalDues">$0.00</p>
-                </div>
-                <div class="sum-card advance">
-                    <h3>Advance Credits 🟢</h3>
-                    <p class="count" id="totalAdvance">$0.00</p>
+    <div class="user-strip">
+        <span><b>User:</b> Tahir Qureshi 👤</span>
+    </div>
+
+    <main class="workspace">
+        <div class="page-header">
+            <h2>NEW EMPLOYEE 👤</h2>
+            <div class="search-section">
+                <label>Search By ID or Name</label>
+                <div class="search-input-group">
+                    <input type="text" id="empSearch" placeholder="...">
+                    <button class="btn-search">Search</button>
                 </div>
             </div>
+        </div>
 
-            <div class="tab-container">
-                <button class="tab-btn active" id="tabList" onclick="switchTab('list')"><i class="fas fa-list"></i> Customer Directory</button>
-                <button class="tab-btn" id="tabAdd" onclick="switchTab('add')"><i class="fas fa-user-plus"></i> Add New Customer</button>
-            </div>
+        <div class="main-grid">
+            <!-- Left: Input Pane -->
+            <section class="form-pane">
+                <div class="group-box">
+                    <span class="group-label">New Employee Account</span>
+                    <form id="employeeForm">
+                        <div class="sub-grid">
+                            <div class="form-column">
+                                <div class="input-set">
+                                    <label>Join Date:</label>
+                                    <input type="date" id="joinDate" required>
+                                </div>
+                                <div class="input-set">
+                                    <label>First Name</label>
+                                    <input type="text" id="fName" placeholder="Enter first name" required>
+                                </div>
+                                <div class="input-set">
+                                    <label>Last Name</label>
+                                    <input type="text" id="lName" placeholder="Enter last name" required>
+                                </div>
+                                <div class="input-set">
+                                    <label>NIC (ID Card):</label>
+                                    <input type="text" id="empNic" placeholder="42xxx-xxxxxxx-x" required>
+                                </div>
+                                <div class="input-set">
+                                    <label>Contact:</label>
+                                    <input type="text" id="empContact" class="contact-focus" placeholder="03xxxxxxxxx" required>
+                                </div>
+                            </div>
 
-            <!-- List View -->
-            <div id="listView" class="content-tab">
-                <div class="list-controls">
-                    <input type="text" id="custSearch" placeholder="Search by name or phone..." oninput="searchCustomers()">
-                    <button class="btn-filter" onclick="clearDatabase()"><i class="fas fa-trash"></i> Reset Data</button>
-                </div>
-                <div class="table-responsive">
-                    <table class="cust-table">
-                        <thead>
-                            <tr>
-                                <th>Client Details 👤</th>
-                                <th>Contact & Area 📍</th>
-                                <th>Balance Status ⚖️</th>
-                                <th>Last Delivery 🚚</th>
-                                <th>Actions ⚙️</th>
-                            </tr>
-                        </thead>
-                        <tbody id="customerTableBody">
-                            <!-- JS Injection -->
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+                            <div class="form-column">
+                                <div class="input-set">
+                                    <label>Address:</label>
+                                    <input type="text" id="empAddress" placeholder="Home or Office address">
+                                </div>
+                                <div class="input-set">
+                                    <label>Employee Designation:</label>
+                                    <select id="empDesignation" required>
+                                        <option value="">-- Select Designation --</option>
+                                        <option value="Marketing Manager">Marketing Manager 📊</option>
+                                        <option value="Accountant">Accountant 💰</option>
+                                        <option value="Assistant Accountant">Assistant Accountant 📉</option>
+                                        <option value="Computer Operator">Computer Operator 💻</option>
+                                        <option value="Supervisor">Supervisor 👷</option>
+                                        <option value="Store Keeper">Store Keeper 🗝️</option>
+                                        <option value="Delivery Boy">Delivery Boy 🚚</option>
+                                        <option value="Salesman">Salesman 🤝</option>
+                                        <option value="Loader">Loader 📦</option>
+                                        <option value="Lab Incharge">Lab Incharge 🧪</option>
+                                        <option value="Plant Worker">Plant Worker 🏭</option>
+                                        <option value="Helper">Helper 🤝</option>
+                                    </select>
+                                </div>
+                                <div class="input-set">
+                                    <label>Account Status:</label>
+                                    <select id="empStatus">
+                                        <option value="Active">Active ✅</option>
+                                        <option value="Inactive">Inactive ❌</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="login-info-box">
+                                    <p class="box-tag">Customer Login Info</p>
+                                    <div class="input-set horizontal">
+                                        <label>User Name:</label>
+                                        <input type="text" id="uName">
+                                    </div>
+                                    <div class="input-set horizontal">
+                                        <label>Password:</label>
+                                        <input type="password" id="uPass">
+                                    </div>
+                                    <div class="checkbox-set">
+                                        <input type="checkbox" id="showPass"> <label for="showPass">Show Password</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
-            <!-- Add Form View -->
-            <div id="addView" class="content-tab" style="display:none;">
-                <div class="form-card">
-                    <h2>Register New Client Record 📝</h2>
-                    <form id="addCustForm" class="grid-form">
-                        <div class="input-group">
-                            <label>Full Name / Company</label>
-                            <input type="text" id="cName" placeholder="Client Name" required>
-                        </div>
-                        <div class="input-group">
-                            <label>Phone Number 📞</label>
-                            <input type="tel" id="cPhone" placeholder="03XX-XXXXXXX" required>
-                        </div>
-                        <div class="input-group">
-                            <label>Area / Sector 🗺️</label>
-                            <select id="cArea">
-                                <option>Commercial Zone A</option>
-                                <option>Industrial Sector 4</option>
-                                <option>Residential Block C</option>
-                            </select>
-                        </div>
-                        <div class="input-group">
-                            <label>Initial Balance ($)</label>
-                            <input type="number" id="cBalance" value="0" placeholder="- for Due, + for Advance">
-                        </div>
-                        <div class="input-group full-width">
-                            <label>Delivery Address 🏠</label>
-                            <textarea id="cAddress" rows="2" placeholder="Street, Building No..."></textarea>
-                        </div>
-                        <div class="form-actions full-width">
-                            <button type="submit" class="btn-save">Save Customer Record ✅</button>
+                        <div class="form-buttons">
+                            <button type="submit" class="btn-save">Save ✅</button>
+                            <button type="button" class="btn-edit">Edit 📝</button>
+                            <button type="button" class="btn-refresh" onclick="location.reload()">Refresh 🔄</button>
                         </div>
                     </form>
                 </div>
-            </div>
+            </section>
+
+            <!-- Right: Data Table -->
+            <section class="table-pane">
+                <div class="group-box">
+                    <span class="group-label">Employee Accounts</span>
+                    <div class="table-wrapper">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>SNO</th>
+                                    <th>Acc#</th>
+                                    <th>First Name</th>
+                                    <th>Designation</th>
+                                </tr>
+                            </thead>
+                            <tbody id="employeeData">
+                                <!-- Storage Data -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
         </div>
     </main>
 
     <footer class="status-bar">
-        <div class="status-left">© SOFTWEBPK - Local CRM Sync Active</div>
-        <div class="status-right">System Stability: <span class="sync">Optimal ●</span></div>
+        <div class="status-left">© SOFTWEBPK - Workforce Database</div>
+        <div class="status-center">App Code: <b>RG-Demo</b></div>
+        <div class="status-right">Help Line: <b>0092-315-1150070</b> 📞</div>
     </footer>
 
-    <script src="cust.js"></script>
+    <script src="Staff.js"></script>
 </body>
 </html>

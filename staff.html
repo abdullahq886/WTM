@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Workforce Management | AquaFlow Pro</title>
+    <title>Employee Management | AquaFlow Pro</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="Staff.css">
 </head>
 <body>
 
-    <!-- Top Bar with Internal Links -->
+    <!-- Professional Software Header -->
     <header class="top-bar">
         <div class="header-logo">
             <div class="logo-circle"><i class="fas fa-droplet"></i></div>
@@ -19,137 +19,175 @@
                 <p>Inventory Software</p>
             </div>
         </div>
+        
+        <nav class="software-nav">
+            <a href="index.html" class="nav-item"><i class="fas fa-chart-line"></i><span>Dashboard 📊</span></a>
+            <a href="Prod.html" class="nav-item"><i class="fas fa-box"></i><span>Products 📦</span></a>
+            <div class="nav-item dropdown">
+  
+  <a href="#" class="nav-link">
+    <i class="fas fa-users"></i>
+    <span>Customers 👥</span>
+  </a>
 
-        <nav class="icon-nav">
-            <a href="produ.html" class="nav-item"><i class="fas fa-chart-line"></i><span>Dashboard</span></a>
-            <a href="cust.html" class="nav-item"><i class="fas fa-users"></i><span>Customers</span></a>
-            <a href="Staff.html" class="nav-item active"><i class="fas fa-user-group"></i><span>Employees</span></a>
-            <a href="bot.html" class="nav-item"><i class="fas fa-fill-drip"></i><span>Operations</span></a>
-            <a href="Settings.html" class="nav-item"><i class="fas fa-gear"></i><span>Settings</span></a>
+  <ul class="dropdown-menu">
+    <li><a href="cust.html">New Customer</a></li>
+    <li><a href="order.html">New Sales Order</a></li>
+    <li><a href="#">Add Customer Payment</a></li>
+    <li><a href="#">Customer Ledger</a></li>
+    <li><a href="#">Customer Security Amount</a></li>
+    <li><a href="#">Customer Balance Sheet</a></li>
+    <li><a href="price.html">Set Product Price To Customer</a></li>
+    <li><a href="#">Set Customer Pin From Google Map</a></li>
+  </ul>
+
+</div>
+
+            
+            <a href="vendor.html" class="nav-item"><i class="fas fa-truck"></i><span>Vendor 🚛</span></a>
+            <a href="Staff.html" class="nav-item active"><i class="fas fa-user-tie"></i><span>Employee 👤</span></a>
+            <a href="Reports.html" class="nav-item"><i class="fas fa-file-invoice"></i><span>Reports 📑</span></a>
+            <a href="Settings.html" class="nav-item"><i class="fas fa-gears"></i><span>Setting ⚙️</span></a>
         </nav>
 
         <div class="window-controls">
-            <button id="theme-toggle"><i class="fas fa-moon"></i></button>
+            <button id="theme-toggle" title="Switch Theme"><i class="fas fa-moon"></i></button>
+            <i class="fas fa-window-minimize"></i>
             <i class="fas fa-rectangle-xmark close-btn" onclick="location.href='produ.html'"></i>
         </div>
     </header>
 
-    <main class="main-content">
-        <div class="container">
-            <!-- Workforce Stats (Live Linking) -->
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <div class="stat-icon blue"><i class="fas fa-users-gear"></i></div>
-                    <div class="stat-info">
-                        <h3>Total Staff</h3>
-                        <p class="value" id="countTotal">0</p>
-                    </div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon green"><i class="fas fa-truck-ramp-box"></i></div>
-                    <div class="stat-info">
-                        <h3>Field Staff</h3>
-                        <p class="value" id="countField">0</p>
-                    </div>
-                </div>
-                <div class="stat-card orange">
-                    <div class="stat-icon orange"><i class="fas fa-clock-rotate-left"></i></div>
-                    <div class="stat-info">
-                        <h3>Live Attendance</h3>
-                        <p class="value">98%</p>
-                    </div>
+    <div class="user-strip">
+        <span><b>User:</b> Tahir Qureshi 👤</span>
+    </div>
+
+    <main class="workspace">
+        <div class="page-header">
+            <h2>NEW EMPLOYEE 👤</h2>
+            <div class="search-section">
+                <label>Search By ID or Name</label>
+                <div class="search-input-group">
+                    <input type="text" id="empSearch" placeholder="...">
+                    <button class="btn-search">Search</button>
                 </div>
             </div>
+        </div>
 
-            <!-- Management Tabs -->
-            <div class="tab-box">
-                <button class="tab-link active" onclick="openTab('directory')">Staff Directory 📋</button>
-                <button class="tab-link" onclick="openTab('payroll')">Payroll Hub 💰</button>
-                <button class="tab-link" onclick="openTab('register')">Add Employee 👤+</button>
-            </div>
+        <div class="main-grid">
+            <!-- Left: Input Pane -->
+            <section class="form-pane">
+                <div class="group-box">
+                    <span class="group-label">New Employee Account</span>
+                    <form id="employeeForm">
+                        <div class="sub-grid">
+                            <div class="form-column">
+                                <div class="input-set">
+                                    <label>Join Date:</label>
+                                    <input type="date" id="joinDate" required>
+                                </div>
+                                <div class="input-set">
+                                    <label>First Name</label>
+                                    <input type="text" id="fName" placeholder="Enter first name" required>
+                                </div>
+                                <div class="input-set">
+                                    <label>Last Name</label>
+                                    <input type="text" id="lName" placeholder="Enter last name" required>
+                                </div>
+                                <div class="input-set">
+                                    <label>NIC (ID Card):</label>
+                                    <input type="text" id="empNic" placeholder="42xxx-xxxxxxx-x" required>
+                                </div>
+                                <div class="input-set">
+                                    <label>Contact:</label>
+                                    <input type="text" id="empContact" class="contact-focus" placeholder="03xxxxxxxxx" required>
+                                </div>
+                            </div>
 
-            <!-- Tab 1: Directory -->
-            <div id="directory" class="tab-content active">
-                <div class="action-bar">
-                    <input type="text" id="staffSearch" placeholder="Search staff by name..." oninput="filterStaff()">
-                    <button class="btn-clear-db" onclick="resetStaffDB()"><i class="fas fa-sync"></i> Refresh</button>
-                </div>
-                <div class="table-container">
-                    <table class="staff-table">
-                        <thead>
-                            <tr>
-                                <th>Member 👤</th>
-                                <th>Role / Type 🛠️</th>
-                                <th>Contact 📞</th>
-                                <th>Status 🚦</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody id="staffTableBody"></tbody>
-                    </table>
-                </div>
-            </div>
+                            <div class="form-column">
+                                <div class="input-set">
+                                    <label>Address:</label>
+                                    <input type="text" id="empAddress" placeholder="Home or Office address">
+                                </div>
+                                <div class="input-set">
+                                    <label>Employee Designation:</label>
+                                    <select id="empDesignation" required>
+                                        <option value="">-- Select Designation --</option>
+                                        <option value="Marketing Manager">Marketing Manager 📊</option>
+                                        <option value="Accountant">Accountant 💰</option>
+                                        <option value="Assistant Accountant">Assistant Accountant 📉</option>
+                                        <option value="Computer Operator">Computer Operator 💻</option>
+                                        <option value="Supervisor">Supervisor 👷</option>
+                                        <option value="Store Keeper">Store Keeper 🗝️</option>
+                                        <option value="Delivery Boy">Delivery Boy 🚚</option>
+                                        <option value="Salesman">Salesman 🤝</option>
+                                        <option value="Loader">Loader 📦</option>
+                                        <option value="Lab Incharge">Lab Incharge 🧪</option>
+                                        <option value="Plant Worker">Plant Worker 🏭</option>
+                                        <option value="Helper">Helper 🤝</option>
+                                    </select>
+                                </div>
+                                <div class="input-set">
+                                    <label>Account Status:</label>
+                                    <select id="empStatus">
+                                        <option value="Active">Active ✅</option>
+                                        <option value="Inactive">Inactive ❌</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="login-info-box">
+                                    <p class="box-tag">Customer Login Info</p>
+                                    <div class="input-set horizontal">
+                                        <label>User Name:</label>
+                                        <input type="text" id="uName">
+                                    </div>
+                                    <div class="input-set horizontal">
+                                        <label>Password:</label>
+                                        <input type="password" id="uPass">
+                                    </div>
+                                    <div class="checkbox-set">
+                                        <input type="checkbox" id="showPass"> <label for="showPass">Show Password</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
-            <!-- Tab 2: Payroll (Automatic Calculation) -->
-            <div id="payroll" class="tab-content">
-                <div class="info-alert"><i class="fas fa-info-circle"></i> Commissions are linked to deliveries logged in the Operations module.</div>
-                <div class="table-container">
-                    <table class="payroll-table">
-                        <thead>
-                            <tr>
-                                <th>Staff Member</th>
-                                <th>Base Salary</th>
-                                <th>Jars Delivered</th>
-                                <th>Commission 💵</th>
-                                <th>Total Payable</th>
-                            </tr>
-                        </thead>
-                        <tbody id="payrollTableBody"></tbody>
-                    </table>
-                </div>
-            </div>
-
-            <!-- Tab 3: Register Form -->
-            <div id="register" class="tab-content">
-                <div class="form-card">
-                    <h2>Register New Employee Record 📝</h2>
-                    <form id="addStaffForm" class="grid-form">
-                        <div class="input-group">
-                            <label>Full Name</label>
-                            <input type="text" id="sName" placeholder="Employee Name" required>
-                        </div>
-                        <div class="input-group">
-                            <label>Employee Type</label>
-                            <select id="sType">
-                                <option value="Field">Delivery Boy (Field)</option>
-                                <option value="Office">Office Staff</option>
-                            </select>
-                        </div>
-                        <div class="input-group">
-                            <label>Monthly Salary ($)</label>
-                            <input type="number" id="sSalary" placeholder="0.00" required>
-                        </div>
-                        <div class="input-group">
-                            <label>Commission per Jar ($)</label>
-                            <input type="number" id="sComm" value="5">
-                        </div>
-                        <div class="input-group">
-                            <label>Phone Number</label>
-                            <input type="tel" id="sPhone" placeholder="03XX-XXXXXXX" required>
-                        </div>
-                        <div class="form-actions full-width">
-                            <button type="submit" class="btn-save">Confirm Registration ✅</button>
+                        <div class="form-buttons">
+                            <button type="submit" class="btn-save">Save ✅</button>
+                            <button type="button" class="btn-edit">Edit 📝</button>
+                            <button type="button" class="btn-refresh" onclick="location.reload()">Refresh 🔄</button>
                         </div>
                     </form>
                 </div>
-            </div>
+            </section>
 
+            <!-- Right: Data Table -->
+            <section class="table-pane">
+                <div class="group-box">
+                    <span class="group-label">Employee Accounts</span>
+                    <div class="table-wrapper">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>SNO</th>
+                                    <th>Acc#</th>
+                                    <th>First Name</th>
+                                    <th>Designation</th>
+                                </tr>
+                            </thead>
+                            <tbody id="employeeData">
+                                <!-- Storage Data -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
         </div>
     </main>
 
     <footer class="status-bar">
-        <div class="status-left">© SOFTWEBPK - Workforce Manager</div>
-        <div class="status-right">System Time: <span id="clock">00:00:00</span></div>
+        <div class="status-left">© SOFTWEBPK - Workforce Database</div>
+        <div class="status-center">App Code: <b>RG-Demo</b></div>
+        <div class="status-right">Help Line: <b>0092-315-1150070</b> 📞</div>
     </footer>
 
     <script src="Staff.js"></script>

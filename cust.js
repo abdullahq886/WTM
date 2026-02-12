@@ -1,115 +1,126 @@
-document.addEventListener('DOMContentLoaded', () => {
-    // Initial Load
-    renderCustomers();
+// Global variable to track which employee is being edited
+let currentEditId = null;
 
-    // Theme Logic
+document.addEventListener('DOMContentLoaded', () => {
+    loadEmployees();
+
+    // 1. Theme Logic
     const themeBtn = document.getElementById('theme-toggle');
     themeBtn.addEventListener('click', () => {
         const html = document.documentElement;
-        const isDark = html.getAttribute('data-theme') === 'dark';
-        html.setAttribute('data-theme', isDark ? 'light' : 'dark');
-        themeBtn.innerHTML = isDark ? '<i class="fas fa-moon"></i>' : '<i class="fas fa-sun"></i>';
+        const newTheme = html.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+        html.setAttribute('data-theme', newTheme);
     });
 
-    // Handle Form Submit
-    const addForm = document.getElementById('addCustForm');
-    addForm.addEventListener('submit', (e) => {
+    // 2. Default Date
+    document.getElementById('joinDate').valueAsDate = new Date();
+
+    // 3. Form Submission (Save or Update)
+    const empForm = document.getElementById('employeeForm');
+    empForm.addEventListener('submit', (e) => {
         e.preventDefault();
 
-        const newCust = {
-            id: Date.now(),
-            name: document.getElementById('cName').value,
-            phone: document.getElementById('cPhone').value,
-            area: document.getElementById('cArea').value,
-            balance: parseFloat(document.getElementById('cBalance').value) || 0,
-            address: document.getElementById('cAddress').value,
-            lastDel: "New Account"
+        let list = JSON.parse(localStorage.getItem('employeeDB')) || [];
+
+        const employeeData = {
+            id: currentEditId ? currentEditId : Date.now(), // Purana ID rakho agar edit ho raha hai
+            acc: currentEditId ? getAccById(currentEditId) : 'AC-' + Math.floor(100 + Math.random() * 900),
+            date: document.getElementById('joinDate').value,
+            first: document.getElementById('fName').value,
+            last: document.getElementById('lName').value,
+            nic: document.getElementById('empNic').value,
+            contact: document.getElementById('empContact').value,
+            designation: document.getElementById('empDesignation').value,
+            status: document.getElementById('empStatus').value,
+            address: document.getElementById('empAddress').value,
+            uname: document.getElementById('uName').value
         };
 
-        // Save to LocalStorage
-        let customers = JSON.parse(localStorage.getItem('myCustomers')) || [];
-        customers.push(newCust);
-        localStorage.setItem('myCustomers', JSON.stringify(customers));
+        if (currentEditId) {
+            // Update Existing Record
+            const index = list.findIndex(emp => emp.id === currentEditId);
+            list[index] = employeeData;
+            alert("✨ Record Updated Successfully!");
+        } else {
+            // Add New Record
+            list.push(employeeData);
+            alert("✅ New Employee Saved!");
+        }
 
-        alert("✅ CUSTOMER REGISTERED SUCCESSFULLY");
-        addForm.reset();
-        switchTab('list'); // Switch back to list after saving
-        renderCustomers();
+        localStorage.setItem('employeeDB', JSON.stringify(list));
+        resetForm();
+        loadEmployees();
+    });
+
+    // 4. Show Password Logic
+    document.getElementById('showPass').addEventListener('change', function() {
+        document.getElementById('uPass').type = this.checked ? 'text' : 'password';
     });
 });
 
-// Switch Tabs Function
-function switchTab(tab) {
-    const list = document.getElementById('listView');
-    const add = document.getElementById('addView');
-    const bList = document.getElementById('tabList');
-    const bAdd = document.getElementById('tabAdd');
+// 5. Function to load data into form for Editing
+function editEmployee(id) {
+    const list = JSON.parse(localStorage.getItem('employeeDB')) || [];
+    const emp = list.find(e => e.id === id);
 
-    if(tab === 'list') {
-        list.style.display = 'block'; add.style.display = 'none';
-        bList.classList.add('active'); bAdd.classList.remove('active');
-    } else {
-        list.style.display = 'none'; add.style.display = 'block';
-        bList.classList.remove('active'); bAdd.classList.add('active');
+    if (emp) {
+        currentEditId = id; // Set the edit mode
+        
+        // Fill form fields
+        document.getElementById('joinDate').value = emp.date;
+        document.getElementById('fName').value = emp.first;
+        document.getElementById('lName').value = emp.last;
+        document.getElementById('empNic').value = emp.nic;
+        document.getElementById('empContact').value = emp.contact;
+        document.getElementById('empDesignation').value = emp.designation;
+        document.getElementById('empStatus').value = emp.status;
+        document.getElementById('empAddress').value = emp.address;
+        document.getElementById('uName').value = emp.uname;
+
+        // Visual feedback
+        document.querySelector('.btn-save').innerText = "Update ✅";
+        document.querySelector('.btn-save').style.background = "#27ae60"; // Green for update
     }
 }
 
-// Render Table and Stats
-function renderCustomers() {
-    const customers = JSON.parse(localStorage.getItem('myCustomers')) || [];
-    const tbody = document.getElementById('customerTableBody');
-    const statTotal = document.getElementById('totalClients');
-    const statDues = document.getElementById('totalDues');
-    const statAdv = document.getElementById('totalAdvance');
+// 6. Reset Form
+function resetForm() {
+    currentEditId = null;
+    document.getElementById('employeeForm').reset();
+    document.getElementById('joinDate').valueAsDate = new Date();
+    document.querySelector('.btn-save').innerText = "Save ✅";
+    document.querySelector('.btn-save').style.background = ""; // Back to default blue
+}
 
+// 7. Helper to keep the same Account Number during edit
+function getAccById(id) {
+    const list = JSON.parse(localStorage.getItem('employeeDB')) || [];
+    const emp = list.find(e => e.id === id);
+    return emp ? emp.acc : 'AC-000';
+}
+
+// 8. Load Table
+function loadEmployees() {
+    const list = JSON.parse(localStorage.getItem('employeeDB')) || [];
+    const tbody = document.getElementById('employeeData');
     tbody.innerHTML = "";
-    let duesTotal = 0;
-    let advTotal = 0;
 
-    customers.forEach(c => {
-        // Stats Calculation
-        if(c.balance < 0) duesTotal += Math.abs(c.balance);
-        if(c.balance > 0) advTotal += c.balance;
-
-        // UI Logic
-        const balClass = c.balance < 0 ? 'amt-due' : (c.balance > 0 ? 'amt-adv' : '');
-        const balText = c.balance < 0 ? `Due: $${Math.abs(c.balance)}` : (c.balance > 0 ? `Adv: $${c.balance}` : '0.00');
-
-        tbody.innerHTML += `
-            <tr>
-                <td><strong>${c.name}</strong><br><small style="color:#64748b;">ID: ${c.id.toString().slice(-5)}</small></td>
-                <td><i class="fas fa-phone"></i> ${c.phone}<br><i class="fas fa-map-marker-alt"></i> ${c.area}</td>
-                <td><span class="${balClass}">${balText}</span></td>
-                <td>${c.lastDel}</td>
-                <td>
-                    <button class="btn-history" onclick="deleteCust(${c.id})"><i class="fas fa-trash"></i></button>
-                </td>
-            </tr>
+    list.forEach((emp, index) => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>${index + 1}</td>
+            <td><b style="color:var(--primary)">${emp.acc}</b></td>
+            <td>${emp.first}</td>
+            <td>${emp.designation}</td>
         `;
+        
+        // Row par click karne se Edit mode on ho jaye
+        row.onclick = () => {
+            document.querySelectorAll('tr').forEach(r => r.classList.remove('selected-row'));
+            row.classList.add('selected-row');
+            editEmployee(emp.id);
+        };
+
+        tbody.appendChild(row);
     });
-
-    // Update Stats Display
-    statTotal.innerText = customers.length;
-    statDues.innerText = `$${duesTotal.toLocaleString()}`;
-    statAdv.innerText = `$${advTotal.toLocaleString()}`;
-
-    if(customers.length === 0) {
-        tbody.innerHTML = "<tr><td colspan='5' style='text-align:center; padding:30px;'>No customers registered yet.</td></tr>";
-    }
-}
-
-function deleteCust(id) {
-    if(confirm("Remove this customer from records?")) {
-        let customers = JSON.parse(localStorage.getItem('myCustomers')) || [];
-        customers = customers.filter(c => c.id !== id);
-        localStorage.setItem('myCustomers', JSON.stringify(customers));
-        renderCustomers();
-    }
-}
-
-function clearDatabase() {
-    if(confirm("CRITICAL: This will delete ALL customers! Continue?")) {
-        localStorage.removeItem('myCustomers');
-        renderCustomers();
-    }
 }

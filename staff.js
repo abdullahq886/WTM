@@ -1,110 +1,126 @@
+// Global variable to track which employee is being edited
+let currentEditId = null;
+
 document.addEventListener('DOMContentLoaded', () => {
-    // Initial Load from Storage
-    renderStaff();
+    loadEmployees();
 
     // 1. Theme Logic
     const themeBtn = document.getElementById('theme-toggle');
     themeBtn.addEventListener('click', () => {
         const html = document.documentElement;
-        const isDark = html.getAttribute('data-theme') === 'dark';
-        html.setAttribute('data-theme', isDark ? 'light' : 'dark');
-        themeBtn.innerHTML = isDark ? '<i class="fas fa-moon"></i>' : '<i class="fas fa-sun"></i>';
+        const newTheme = html.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+        html.setAttribute('data-theme', newTheme);
     });
 
-    // 2. Add Employee Logic
-    const staffForm = document.getElementById('addStaffForm');
-    staffForm.addEventListener('submit', (e) => {
+    // 2. Default Date
+    document.getElementById('joinDate').valueAsDate = new Date();
+
+    // 3. Form Submission (Save or Update)
+    const empForm = document.getElementById('employeeForm');
+    empForm.addEventListener('submit', (e) => {
         e.preventDefault();
 
-        const newStaff = {
-            id: Date.now(),
-            name: document.getElementById('sName').value,
-            type: document.getElementById('sType').value,
-            salary: parseFloat(document.getElementById('sSalary').value),
-            commRate: parseFloat(document.getElementById('sComm').value) || 0,
-            phone: document.getElementById('sPhone').value,
-            jars: Math.floor(Math.random() * 500), // Simulated Jars delivered
-            status: "online"
+        let list = JSON.parse(localStorage.getItem('employeeDB')) || [];
+
+        const employeeData = {
+            id: currentEditId ? currentEditId : Date.now(), // Purana ID rakho agar edit ho raha hai
+            acc: currentEditId ? getAccById(currentEditId) : 'AC-' + Math.floor(100 + Math.random() * 900),
+            date: document.getElementById('joinDate').value,
+            first: document.getElementById('fName').value,
+            last: document.getElementById('lName').value,
+            nic: document.getElementById('empNic').value,
+            contact: document.getElementById('empContact').value,
+            designation: document.getElementById('empDesignation').value,
+            status: document.getElementById('empStatus').value,
+            address: document.getElementById('empAddress').value,
+            uname: document.getElementById('uName').value
         };
 
-        let staffList = JSON.parse(localStorage.getItem('myStaff')) || [];
-        staffList.push(newStaff);
-        localStorage.setItem('myStaff', JSON.stringify(staffList));
+        if (currentEditId) {
+            // Update Existing Record
+            const index = list.findIndex(emp => emp.id === currentEditId);
+            list[index] = employeeData;
+            alert("✨ Record Updated Successfully!");
+        } else {
+            // Add New Record
+            list.push(employeeData);
+            alert("✅ New Employee Saved!");
+        }
 
-        alert("✅ STAFF REGISTERED SUCCESSFULLY");
-        staffForm.reset();
-        openTab('directory');
-        renderStaff();
+        localStorage.setItem('employeeDB', JSON.stringify(list));
+        resetForm();
+        loadEmployees();
     });
 
-    // 3. Live Clock for Footer
-    setInterval(() => {
-        document.getElementById('clock').innerText = new Date().toLocaleTimeString();
-    }, 1000);
+    // 4. Show Password Logic
+    document.getElementById('showPass').addEventListener('change', function() {
+        document.getElementById('uPass').type = this.checked ? 'text' : 'password';
+    });
 });
 
-// 4. Render and Calculation Function
-function renderStaff() {
-    const staffList = JSON.parse(localStorage.getItem('myStaff')) || [];
-    const tbody = document.getElementById('staffTableBody');
-    const pbody = document.getElementById('payrollTableBody');
-    
-    tbody.innerHTML = "";
-    pbody.innerHTML = "";
+// 5. Function to load data into form for Editing
+function editEmployee(id) {
+    const list = JSON.parse(localStorage.getItem('employeeDB')) || [];
+    const emp = list.find(e => e.id === id);
 
-    let fieldCount = 0;
+    if (emp) {
+        currentEditId = id; // Set the edit mode
+        
+        // Fill form fields
+        document.getElementById('joinDate').value = emp.date;
+        document.getElementById('fName').value = emp.first;
+        document.getElementById('lName').value = emp.last;
+        document.getElementById('empNic').value = emp.nic;
+        document.getElementById('empContact').value = emp.contact;
+        document.getElementById('empDesignation').value = emp.designation;
+        document.getElementById('empStatus').value = emp.status;
+        document.getElementById('empAddress').value = emp.address;
+        document.getElementById('uName').value = emp.uname;
 
-    staffList.forEach(s => {
-        if(s.type === "Field") fieldCount++;
-
-        // Render Directory Row
-        tbody.innerHTML += `
-            <tr>
-                <td><strong>${s.name}</strong></td>
-                <td><span class="badge badge-${s.type.toLowerCase()}">${s.type === 'Field' ? 'Delivery Boy' : 'Office Staff'}</span></td>
-                <td>${s.phone}</td>
-                <td><span class="status-dot ${s.status}"></span> ${s.status.toUpperCase()}</td>
-                <td><button class="btn-sm" onclick="deleteStaff(${s.id})"><i class="fas fa-trash"></i></button></td>
-            </tr>
-        `;
-
-        // Render Payroll Row with Logic
-        const commission = s.type === "Field" ? (s.jars * s.commRate) : 0;
-        const total = s.salary + commission;
-
-        pbody.innerHTML += `
-            <tr>
-                <td><strong>${s.name}</strong></td>
-                <td>$${s.salary.toLocaleString()}</td>
-                <td>${s.type === "Field" ? s.jars : '-'}</td>
-                <td>${commission > 0 ? '$'+commission.toLocaleString() : '-'}</td>
-                <td class="payable">$${total.toLocaleString()}</td>
-            </tr>
-        `;
-    });
-
-    // Update Top Stats
-    document.getElementById('countTotal').innerText = staffList.length;
-    document.getElementById('countField').innerText = fieldCount;
-}
-
-// Global Tab Switcher
-window.openTab = (tabId) => {
-    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-    document.querySelectorAll('.tab-link').forEach(l => l.classList.remove('active'));
-    document.getElementById(tabId).classList.add('active');
-    event.currentTarget.classList.add('active');
-};
-
-function deleteStaff(id) {
-    if(confirm("Terminate this employee record?")) {
-        let staffList = JSON.parse(localStorage.getItem('myStaff')) || [];
-        staffList = staffList.filter(s => s.id !== id);
-        localStorage.setItem('myStaff', JSON.stringify(staffList));
-        renderStaff();
+        // Visual feedback
+        document.querySelector('.btn-save').innerText = "Update ✅";
+        document.querySelector('.btn-save').style.background = "#27ae60"; // Green for update
     }
 }
 
-function resetStaffDB() {
-    location.reload();
+// 6. Reset Form
+function resetForm() {
+    currentEditId = null;
+    document.getElementById('employeeForm').reset();
+    document.getElementById('joinDate').valueAsDate = new Date();
+    document.querySelector('.btn-save').innerText = "Save ✅";
+    document.querySelector('.btn-save').style.background = ""; // Back to default blue
+}
+
+// 7. Helper to keep the same Account Number during edit
+function getAccById(id) {
+    const list = JSON.parse(localStorage.getItem('employeeDB')) || [];
+    const emp = list.find(e => e.id === id);
+    return emp ? emp.acc : 'AC-000';
+}
+
+// 8. Load Table
+function loadEmployees() {
+    const list = JSON.parse(localStorage.getItem('employeeDB')) || [];
+    const tbody = document.getElementById('employeeData');
+    tbody.innerHTML = "";
+
+    list.forEach((emp, index) => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>${index + 1}</td>
+            <td><b style="color:var(--primary)">${emp.acc}</b></td>
+            <td>${emp.first}</td>
+            <td>${emp.designation}</td>
+        `;
+        
+        // Row par click karne se Edit mode on ho jaye
+        row.onclick = () => {
+            document.querySelectorAll('tr').forEach(r => r.classList.remove('selected-row'));
+            row.classList.add('selected-row');
+            editEmployee(emp.id);
+        };
+
+        tbody.appendChild(row);
+    });
 }
