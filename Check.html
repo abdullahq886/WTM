@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Stock Balance | AquaFlow Pro</title>
+    <title>AquaFlow | Check Stock Balance</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="Check.css">
 </head>
 <body>
 
-    <!-- Header Section -->
+    <!-- Professional Software Header (Matches Image) -->
     <header class="top-bar">
         <div class="header-logo">
             <div class="logo-circle"><i class="fas fa-droplet"></i></div>
@@ -19,83 +19,67 @@
                 <p>Inventory Software</p>
             </div>
         </div>
-
-        <nav class="icon-nav">
-            <!-- Internal Links Properly Linked -->
-            <a href="produ.html" class="nav-item"><i class="fas fa-chart-line"></i><span>Dashboard 📊</span></a>
-            <a href="Stock.html" class="nav-item"><i class="fas fa-right-left"></i><span>Stock IN/OUT 🔄</span></a>
-            <a href="Check.html" class="nav-item active"><i class="fas fa-scale-balanced"></i><span>Check Balance ⚖️</span></a>
-            <a href="Settings.html" class="nav-item"><i class="fas fa-gear"></i><span>Settings ⚙️</span></a>
+        
+        <nav class="software-nav">
+            <a href="produ.html" class="nav-item"><i class="fas fa-chart-line"></i><span>Dashboard 📈</span></a>
+            <a href="produ.html" class="nav-item"><i class="fas fa-box"></i><span>Products 📦</span></a>
+            <a href="cust.html" class="nav-item"><i class="fas fa-users"></i><span>Customers 👥</span></a>
+            <a href="vendor.html" class="nav-item"><i class="fas fa-truck"></i><span>Vendor 🚛</span></a>
+            <a href="staff.html" class="nav-item"><i class="fas fa-user-tie"></i><span>Employee 👤</span></a>
+            <a href="Reports.html" class="nav-item"><i class="fas fa-file-invoice"></i><span>Reports 📑</span></a>
+            <a href="Expenditure.html" class="nav-item"><i class="fas fa-dollar-sign"></i><span>Expenditure 💸</span></a>
+            <a href="Transaction.html" class="nav-item"><i class="fas fa-money-bill-transfer"></i><span>Transaction 💳</span></a>
+            <a href="Settings.html" class="nav-item"><i class="fas fa-gears"></i><span>Setting ⚙️</span></a>
         </nav>
 
         <div class="window-controls">
-            <button id="theme-toggle" title="Switch Theme"><i class="fas fa-moon"></i></button>
+            <button id="theme-toggle"><i class="fas fa-moon"></i></button>
+            <i class="fas fa-window-minimize"></i>
             <i class="fas fa-rectangle-xmark close-btn" onclick="location.href='produ.html'"></i>
         </div>
     </header>
 
-    <main class="dashboard-area">
-        <div class="container">
-            <!-- Summary Grid (Live IDs added) -->
-            <div class="summary-grid">
-                <div class="sum-card total">
-                    <div class="sum-info">
-                        <h3>Total Inventory Units</h3>
-                        <p class="count" id="totalCountDisplay">0</p>
-                    </div>
-                    <i class="fas fa-boxes-stacked"></i>
-                </div>
-                <div class="sum-card warning">
-                    <div class="sum-info">
-                        <h3>Low Stock Alerts ⚠️</h3>
-                        <p class="count" id="lowStockCount">0 Items</p>
-                    </div>
-                    <i class="fas fa-triangle-exclamation"></i>
-                </div>
-                <div class="sum-card critical">
-                    <div class="sum-info">
-                        <h3>Out of Stock 🚫</h3>
-                        <p class="count" id="outOfStockCount">0 Items</p>
-                    </div>
-                    <i class="fas fa-circle-xmark"></i>
-                </div>
+    <div class="user-strip">
+        <span><b>User:</b> Tahir Qureshi 👤</span>
+    </div>
+
+    <main class="workspace">
+        <div class="page-title">
+            <h2>CHECK STOCK BALANCE ⚖️</h2>
+        </div>
+
+        <div class="table-card">
+            <div class="card-header">
+                <p>Total Stock Balance</p>
             </div>
-
-            <!-- Table Card -->
-            <div class="inventory-card">
-                <div class="card-header">
-                    <h2><i class="fas fa-list-check"></i> Live Product Health Audit</h2>
-                    <div class="header-actions">
-                        <input type="text" id="searchInput" placeholder="Search by name or SKU...">
-                        <button class="btn-sync" id="syncBtn"><i class="fas fa-sync"></i> Refresh Data</button>
-                    </div>
-                </div>
-
-                <div class="table-responsive">
-                    <table class="balance-table">
-                        <thead>
-                            <tr>
-                                <th>Product Details 📦</th>
-                                <th>Category 📂</th>
-                                <th>Current Balance 🔢</th>
-                                <th>Visual Health 📊</th>
-                                <th>System Status 🔔</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody id="balanceBody">
-                            <!-- Populated by Check.js from LocalStorage -->
-                        </tbody>
-                    </table>
-                </div>
+            <div class="table-responsive">
+                <table id="stockTable">
+                    <thead>
+                        <tr>
+                            <th>SNO</th>
+                            <th>Product Name</th>
+                            <th>Price</th>
+                            <th>Bottle Type</th>
+                            <th>Filling Stock In Warehouse</th>
+                            <th>Empty Stock In Warehouse</th>
+                            <th>Total Stock In Warehouse</th>
+                            <th>Total Damage Stock</th>
+                            <th>Total Stock In Market</th>
+                        </tr>
+                    </thead>
+                    <tbody id="stockData">
+                        <!-- Data linked from storage will appear here -->
+                    </tbody>
+                </table>
             </div>
         </div>
     </main>
 
+    <!-- Professional Status Bar (Matches Image) -->
     <footer class="status-bar">
-        <div class="status-left">© SOFTWEBPK - Inventory Monitoring Unit</div>
-        <div class="status-center">Last Database Sync: <span id="syncTime">--:-- --</span></div>
-        <div class="status-right">System Stability: <span class="healthy">Optimal ●</span></div>
+        <div class="status-left">Copyright all rights reserved by <b>SOFTWEBPK</b></div>
+        <div class="status-center">App Code: <b>RG-Demo</b></div>
+        <div class="status-right">Help Line: <b>0092-315-1150070</b> 📞</div>
     </footer>
 
     <script src="Check.js"></script>

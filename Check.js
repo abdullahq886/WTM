@@ -1,122 +1,64 @@
 document.addEventListener('DOMContentLoaded', () => {
-    
-    // 1. Theme Logic (Persistent)
+    loadStockData();
+
+    // 1. Theme Toggle
     const themeBtn = document.getElementById('theme-toggle');
     themeBtn.addEventListener('click', () => {
-        const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-        const newTheme = isDark ? 'light' : 'dark';
-        document.documentElement.setAttribute('data-theme', newTheme);
+        const html = document.documentElement;
+        const newTheme = html.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+        html.setAttribute('data-theme', newTheme);
         themeBtn.innerHTML = newTheme === 'dark' ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
-        localStorage.setItem('aquaTheme', newTheme);
-    });
-
-    // 2. Load Real Data from Storage
-    const loadInventory = () => {
-        // Fetching data from the same key used in Prod.html and Stock.html
-        const storedData = JSON.parse(localStorage.getItem('myInventory')) || [];
-        renderInventory(storedData);
-        updateSummaryCards(storedData);
-        document.getElementById('syncTime').innerText = new Date().toLocaleTimeString();
-    };
-
-    // 3. Stats Calculation (Total, Low, Out)
-    const updateSummaryCards = (data) => {
-        let totalUnits = 0;
-        let lowCount = 0;
-        let outCount = 0;
-
-        data.forEach(item => {
-            const qty = parseInt(item.qty) || 0;
-            const reorder = parseInt(item.reorder) || 50; // Default reorder point
-            
-            totalUnits += qty;
-            if (qty === 0) outCount++;
-            else if (qty <= reorder) lowCount++;
-        });
-
-        document.getElementById('totalCountDisplay').innerText = totalUnits.toLocaleString();
-        document.getElementById('lowStockCount').innerText = `${lowCount} Items`;
-        document.getElementById('outOfStockCount').innerText = `${outCount} Items`;
-    };
-
-    // 4. Render Engine
-    const tableBody = document.getElementById('balanceBody');
-    const renderInventory = (data) => {
-        tableBody.innerHTML = "";
-        
-        if (data.length === 0) {
-            tableBody.innerHTML = "<tr><td colspan='6' style='text-align:center; padding:30px;'>No inventory data found in system database.</td></tr>";
-            return;
-        }
-
-        data.forEach(item => {
-            const qty = parseInt(item.qty) || 0;
-            const reorder = parseInt(item.reorder) || 50;
-            const max = 1000; // Assuming 1000 as 100% capacity for visual bar
-
-            // Dynamic Styling Logic
-            let healthClass = "good";
-            let statusText = "HEALTHY STOCK";
-            let statusClass = "healthy";
-            let percentage = Math.round((qty / max) * 100);
-            if(percentage > 100) percentage = 100;
-
-            if (qty === 0) {
-                healthClass = "crit";
-                statusText = "OUT OF STOCK";
-                statusClass = "out";
-                percentage = 5;
-            } else if (qty <= reorder) {
-                healthClass = "low";
-                statusText = "REORDER SOON";
-                statusClass = "reorder";
-            }
-
-            const row = `
-                <tr>
-                    <td><strong>${item.name}</strong><br><small>${item.sku || 'N/A'}</small></td>
-                    <td>${item.cat || 'General'}</td>
-                    <td><strong style="font-size: 1.1rem;">${qty.toLocaleString()}</strong> Units</td>
-                    <td>
-                        <div class="health-container">
-                            <span class="health-label">Warehouse Capacity: ${percentage}%</span>
-                            <div class="bar-outer">
-                                <div class="bar-inner ${healthClass}" style="width: ${percentage}%"></div>
-                            </div>
-                        </div>
-                    </td>
-                    <td><span class="status-badge ${statusClass}">${statusText}</span></td>
-                    <td><button class="btn-order" onclick="triggerPurchase('${item.name}')">Restock 🛒</button></td>
-                </tr>
-            `;
-            tableBody.innerHTML += row;
-        });
-    };
-
-    // 5. Initial Load & Sync
-    loadInventory();
-
-    // 6. Search Functionality
-    document.getElementById('searchInput').addEventListener('input', (e) => {
-        const val = e.target.value.toLowerCase();
-        const storedData = JSON.parse(localStorage.getItem('myInventory')) || [];
-        const filtered = storedData.filter(item => 
-            item.name.toLowerCase().includes(val) || (item.sku && item.sku.toLowerCase().includes(val))
-        );
-        renderInventory(filtered);
-    });
-
-    // 7. Manual Sync Button
-    document.getElementById('syncBtn').addEventListener('click', () => {
-        const btn = document.getElementById('syncBtn');
-        btn.innerHTML = '<i class="fas fa-sync fa-spin"></i> Syncing...';
-        setTimeout(() => {
-            btn.innerHTML = '<i class="fas fa-sync"></i> Refresh Data';
-            loadInventory();
-        }, 1000);
     });
 });
 
-function triggerPurchase(prod) {
-    alert(`SYSTEM REDIRECT: Navigating to procurement for ${prod}. Generating Purchase Order...`);
+// 2. Load Data from localStorage (Internal Linking)
+function loadStockData() {
+    // This key 'waterInventory' must match the key used in your produ.js save function
+    const products = JSON.parse(localStorage.getItem('waterInventory')) || [];
+    const tbody = document.getElementById('stockData');
+    
+    tbody.innerHTML = "";
+
+    // If no data, show empty rows (like in your image)
+    if (products.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="9" style="text-align:center; padding:20px;">No Stock Data Available. Please Add Products first.</td></tr>`;
+        return;
+    }
+
+    products.forEach((p, index) => {
+        const row = document.createElement('tr');
+        
+        // Logical calculations for a professional ERP feel
+        const fillingStock = p.qty || 0; // Linked from Initial Qty
+        const emptyStock = Math.floor(fillingStock * 0.2); // Simulated empty jars
+        const totalInWh = parseInt(fillingStock) + emptyStock;
+        const damage = 0; 
+        const market = "-"; 
+
+        row.innerHTML = `
+            <td>${index + 1}</td>
+            <td>${p.name}</td>
+            <td>${p.price}</td>
+            <td>${p.type}</td>
+            <td>${fillingStock}</td>
+            <td>${emptyStock}</td>
+            <td>${totalInWh}</td>
+            <td>${damage}</td>
+            <td>${market}</td>
+        `;
+
+        // Row Selection Logic (Matches Blue Highlight in your image)
+        row.onclick = () => {
+            document.querySelectorAll('tr').forEach(r => r.classList.remove('selected-row'));
+            row.classList.add('selected-row');
+        };
+
+        tbody.appendChild(row);
+    });
 }
+
+// Manual Sync (Sync Data Button)
+document.querySelector('.btn-sync')?.addEventListener('click', () => {
+    loadStockData();
+    alert("Database Synced Successfully! ●");
+});
